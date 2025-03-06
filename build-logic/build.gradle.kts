@@ -19,3 +19,12 @@ dependencies {
     implementation(libs.kotlinGradlePlugin)
     implementation(libs.hiltGradlePlugin)
 }
+
+gradlePlugin {
+    plugins {
+        register("HiltAndroid") {
+            id = "youredoingwell.hilt"
+            implementationClass = "com.hegunhee.build_logic.setting.HiltPlugin"
+        }
+    }
+}
