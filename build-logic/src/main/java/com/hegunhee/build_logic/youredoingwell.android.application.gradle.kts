@@ -1,3 +1,4 @@
+import com.hegunhee.build_logic.setting.configureComposeAndroid
 import com.hegunhee.build_logic.setting.configureKotlinAndroid
 
 plugins {
@@ -5,3 +6,4 @@ plugins {
 }
 
 configureKotlinAndroid()
+configureComposeAndroid()
