@@ -17,4 +17,5 @@ java {
 dependencies {
     implementation(libs.androidGradlePlugin)
     implementation(libs.kotlinGradlePlugin)
+    implementation(libs.hiltGradlePlugin)
 }
