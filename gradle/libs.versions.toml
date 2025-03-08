@@ -14,6 +14,12 @@ hilt = "2.55"
 
 ksp = "2.0.0-1.0.21"
 
+google-services = "4.4.2"
+firebaseBom = "33.10.0"
+
+firebaseAuthentication = "23.2.0"
+firebaseRealtimeDatabase = "21.0.0"
+
 [libraries]
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -40,6 +46,11 @@ hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hi
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-authenticate = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuthentication" }
+firebase-realtimeDatabase = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseRealtimeDatabase" }
+
 [bundles]
 compose-ui = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling-preview"]
 
@@ -51,3 +62,7 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+# firebase
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+

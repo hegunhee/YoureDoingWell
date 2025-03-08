@@ -1,6 +1,8 @@
 plugins {
     id("youredoingwell.android.application")
     alias(libs.plugins.kotlin.compose)
+    // Firebase
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -12,4 +14,11 @@ android {
         versionName = "1.0"
     }
 
+}
+
+dependencies {
+    add("implementation", platform(libs.firebase.bom))
+    add("implementation", libs.firebase.analytics)
+    add("implementation", libs.firebase.authenticate)
+    add("implementation", libs.firebase.realtimeDatabase)
 }
