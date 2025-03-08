@@ -14,6 +14,8 @@ hilt = "2.55"
 
 ksp = "2.0.0-1.0.21"
 
+google-services = "4.4.2"
+
 [libraries]
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -51,3 +53,7 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+# firebase
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services"}
+

@@ -1,6 +1,8 @@
 plugins {
     id("youredoingwell.android.application")
     alias(libs.plugins.kotlin.compose)
+    // Firebase
+    alias(libs.plugins.google.services)
 }
 
 android {
