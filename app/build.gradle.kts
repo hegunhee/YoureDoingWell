@@ -15,3 +15,10 @@ android {
     }
 
 }
+
+dependencies {
+    add("implementation", platform(libs.firebase.bom))
+    add("implementation", libs.firebase.analytics)
+    add("implementation", libs.firebase.authenticate)
+    add("implementation", libs.firebase.realtimeDatabase)
+}
