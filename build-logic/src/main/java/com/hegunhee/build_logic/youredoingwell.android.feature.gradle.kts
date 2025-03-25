@@ -15,4 +15,6 @@ dependencies {
     add("implementation", libs.findLibrary("androidx-activity-compose").get())
 
     add("implementation", libs.findLibrary("androidx-lifecycle-runtime-ktx").get())
+    add("implementation",libs.findLibrary("androidx-appcompat").get())
+    add("implementation",libs.findLibrary("material").get())
 }
