@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 rootProject.name = "YoureDoingWell"
 include(":app")
 include(":feature:main")
+include(":core:designsystem")

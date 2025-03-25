@@ -11,6 +11,8 @@ configureHilt()
 
 dependencies {
 
+    add("implementation",project(":core:designsystem"))
+
     add("implementation", libs.findLibrary("androidx-core-ktx").get())
     add("implementation", libs.findLibrary("androidx-activity-compose").get())
 
