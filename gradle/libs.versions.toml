@@ -19,6 +19,8 @@ firebaseBom = "33.10.0"
 
 firebaseAuthentication = "23.2.0"
 firebaseRealtimeDatabase = "21.0.0"
+appcompat = "1.7.0"
+material = "1.12.0"
 
 [libraries]
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -50,6 +52,8 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-authenticate = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuthentication" }
 firebase-realtimeDatabase = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseRealtimeDatabase" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [bundles]
 compose-ui = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling-preview"]
@@ -65,4 +69,5 @@ devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 # firebase
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 

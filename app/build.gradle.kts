@@ -21,4 +21,6 @@ dependencies {
     add("implementation", libs.firebase.analytics)
     add("implementation", libs.firebase.authenticate)
     add("implementation", libs.firebase.realtimeDatabase)
+
+    add("implementation",project(":feature:main"))
 }
