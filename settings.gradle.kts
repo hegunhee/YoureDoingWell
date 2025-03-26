@@ -24,3 +24,4 @@ rootProject.name = "YoureDoingWell"
 include(":app")
 include(":feature:main")
 include(":core:designsystem")
+include(":feature:signin")

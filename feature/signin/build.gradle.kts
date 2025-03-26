@@ -4,12 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "doingwell.feature.main"
+    namespace = "doingwell.feature.signin"
+
 }
 
 dependencies {
-
-    add("implementation",project(":feature:signin"))
 
     add("implementation", platform(libs.firebase.bom))
     add("implementation", libs.firebase.authenticate)
