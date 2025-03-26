@@ -11,11 +11,14 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.hegunhee.youredoingwell.ui.theme.MainGreen
 import com.hegunhee.youredoingwell.ui.theme.Typography
 
 @Composable
-fun MainScreenRoot() {
+fun MainScreenRoot(
+    viewModel : MainViewModel = hiltViewModel(),
+) {
     MainScreen()
 }
 
