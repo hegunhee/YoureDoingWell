@@ -21,4 +21,5 @@ dependencies {
     add("implementation",libs.findLibrary("material").get())
 
     add("implementation",libs.findLibrary("androidx-navigation").get())
+    add("implementation",libs.findLibrary("hilt-navigation").get())
 }
