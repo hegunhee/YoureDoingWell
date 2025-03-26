@@ -19,4 +19,6 @@ dependencies {
     add("implementation", libs.findLibrary("androidx-lifecycle-runtime-ktx").get())
     add("implementation",libs.findLibrary("androidx-appcompat").get())
     add("implementation",libs.findLibrary("material").get())
+
+    add("implementation",libs.findLibrary("androidx-navigation").get())
 }
