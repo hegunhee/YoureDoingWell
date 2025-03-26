@@ -5,12 +5,15 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import doingwell.feature.main.screen.MainScreenRoot
 
-const val MAIN_ROUTE = "MAIN_SCREEN"
+const val MAIN_ROUTE = "MAIN_ROUTE"
 
 fun NavGraphBuilder.mainNavGraph(
     paddingValues: PaddingValues,
+    popSignInScreen: () -> Unit,
 ) {
     composable(MAIN_ROUTE) {
-        MainScreenRoot()
+        MainScreenRoot(
+            popSignInScreen = popSignInScreen,
+        )
     }
 }
