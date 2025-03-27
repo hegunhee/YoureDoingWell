@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import doingwell.feature.signin.navigation.navigateSignIn
 
 class YoureDoingWellAppState(
     val navController: NavHostController
@@ -12,6 +13,10 @@ class YoureDoingWellAppState(
 
     val currentDestination: State<NavBackStackEntry?>
         @Composable get() = navController.currentBackStackEntryAsState()
+
+    fun navigateToSignIn() {
+        navController.navigateSignIn()
+    }
 
     fun popBackStack() {
         navController.popBackStack()
