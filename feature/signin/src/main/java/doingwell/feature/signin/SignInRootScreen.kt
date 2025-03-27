@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,6 +68,7 @@ fun SignInScreen(
             "",
             onValueChange = {},
             placeholder = { Text(stringResource(R.string.enter_password)) },
+            visualTransformation = PasswordVisualTransformation(),
             modifier = itemModifier,
         )
 
@@ -75,7 +78,7 @@ fun SignInScreen(
             modifier = itemModifier,
         ) {
             Text(
-                text = "로그인",
+                text = stringResource(R.string.login),
                 color = Color.White,
             )
         }
