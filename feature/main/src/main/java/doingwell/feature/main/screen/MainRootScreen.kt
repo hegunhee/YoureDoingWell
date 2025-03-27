@@ -13,28 +13,32 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hegunhee.youredoingwell.ui.theme.MainGreen
 import com.hegunhee.youredoingwell.ui.theme.Typography
+import doingwell.core.ui.text.TitleText
 
 @Composable
 fun MainScreenRoot(
     viewModel : MainViewModel = hiltViewModel(),
     popSignInScreen: () -> Unit,
 ) {
+    val firebaseAuth = remember { Firebase.auth }
     MainScreen(
+        firebaseAuth = firebaseAuth,
         popSignInScreen = popSignInScreen,
     )
 }
 
 @Composable
 fun MainScreen(
+    firebaseAuth: FirebaseAuth?,
     modifier : Modifier = Modifier,
     popSignInScreen : () -> Unit,
 ) {
-    val firebaseAuth = remember { Firebase.auth }
-    if(firebaseAuth.currentUser == null) {
+    if(firebaseAuth?.currentUser == null) {
         popSignInScreen()
     }
     Column {
@@ -64,6 +68,7 @@ private fun titleString() : AnnotatedString {
 @Composable
 fun MainScreenPreview() {
     MainScreen(
+        firebaseAuth = null,
         popSignInScreen = {},
     )
 }
