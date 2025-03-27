@@ -1,4 +1,4 @@
-package doingwell.feature.signin
+package doingwell.feature.signin.signin
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.hegunhee.youredoingwell.ui.theme.MainGreen
 import com.hegunhee.youredoingwell.ui.theme.Typography
 import doingwell.core.ui.text.TitleText
+import doingwell.feature.signin.R
 
 @Composable
 fun SignInRootScreen(

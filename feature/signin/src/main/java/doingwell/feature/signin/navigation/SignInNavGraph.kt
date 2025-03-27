@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import doingwell.feature.signin.SignInRootScreen
+import doingwell.feature.signin.signin.SignInRootScreen
 
 const val SIGN_IN_ROUTE = "SIGN_IN_ROUTE"
 
