@@ -28,10 +28,12 @@ import doingwell.feature.signin.R
 @Composable
 fun SignInRootScreen(
     paddingValues: PaddingValues,
+    onClickSignInButton: (String, String, () -> Unit) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
 ) {
     SignInScreen(
         paddingValues = paddingValues,
+        onClickSignInButton = onClickSignInButton,
         onClickSignUpScreenButton = onClickSignUpScreenButton,
     )
 }
@@ -39,6 +41,7 @@ fun SignInRootScreen(
 @Composable
 fun SignInScreen(
     paddingValues: PaddingValues,
+    onClickSignInButton : (String, String, () -> Unit) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -73,7 +76,7 @@ fun SignInScreen(
         )
 
         Button(
-            onClick = {},
+            onClick = { onClickSignInButton("","",{})},
             colors = ButtonDefaults.buttonColors(containerColor = MainGreen),
             modifier = itemModifier,
         ) {
@@ -102,6 +105,7 @@ fun SignInScreen(
 fun SignInScreenPreview() {
     SignInScreen(
         paddingValues = PaddingValues(10.dp),
+        onClickSignInButton = {email, password, onSuccessCallback -> },
         onClickSignUpScreenButton = {},
     )
 }

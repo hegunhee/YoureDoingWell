@@ -23,6 +23,7 @@ fun NavController.navigateSignUp() {
 
 fun NavGraphBuilder.signInNavGraph(
     paddingValues: PaddingValues,
+    onClickSignInButton: (String, String, () -> Unit) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
     popUpBack : () -> Unit,
     onClickSignUpButton: (String, String, String, () -> Unit) -> Unit,
@@ -30,6 +31,7 @@ fun NavGraphBuilder.signInNavGraph(
     composable(SIGN_IN_ROUTE) {
         SignInRootScreen(
             paddingValues,
+            onClickSignInButton = onClickSignInButton,
             onClickSignUpScreenButton,
         )
     }
