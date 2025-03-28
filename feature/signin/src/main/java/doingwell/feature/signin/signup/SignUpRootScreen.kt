@@ -1,5 +1,6 @@
 package doingwell.feature.signin.signup
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -31,7 +32,8 @@ import com.hegunhee.youredoingwell.ui.theme.MainGreen
 import com.hegunhee.youredoingwell.ui.theme.Typography
 import doingwell.core.ui.text.TitleText
 import doingwell.feature.signin.R
-import doingwell.feature.signin.isValidEmail
+import doingwell.feature.signin.getEmailBoarderColor
+import doingwell.feature.signin.getSignUpPasswordBorderColor
 
 @Composable
 fun SignUpRootScreen(
@@ -72,24 +74,9 @@ fun SignUpScreen(
     val (passwordVisible, onChangedPasswordVisible) = remember { mutableStateOf(false) }
     val passwordVisibleImage = if(passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
 
-    val emailBorderColor = if(isValidEmail(emailText)) {
-        MainGreen
-    } else {
-        if(emailText.isEmpty()) {
-            Color.Unspecified
-        } else {
-            Color.Red
-        }
-    }
+    val emailBorderColor = getEmailBoarderColor(emailText)
 
-    val passwordBorderColor =
-        if (passwordText.isBlank()) {
-            Color.Unspecified
-        } else if (passwordText != recheckPasswordText) {
-            Color.Red
-        } else {
-            MainGreen
-        }
+    val passwordBorderColor = getSignUpPasswordBorderColor(passwordText, recheckPasswordText)
 
 
     Column(
