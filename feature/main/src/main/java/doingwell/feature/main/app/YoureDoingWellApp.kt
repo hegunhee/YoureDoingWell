@@ -31,6 +31,7 @@ fun YoureDoingWellApp(
 
             signInNavGraph(
                 paddingValues = paddingValues,
+                onClickSignInButton = youreDoingWellAuthState::signInWithEmailAndPassword,
                 onClickSignUpScreenButton = youreDoingWellAppState::navigateToSignUp,
                 popUpBack = youreDoingWellAppState::popBackStack,
                 onClickSignUpButton = youreDoingWellAuthState::signUpWithEmail,
