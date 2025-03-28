@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">YoureDoingWell</string>
+    <string name="email_or_password_empty">이메일 혹은 패스워드가 비어있습니다.</string>
+    <string name="email_format_incorrect">이메일 포맷에 맞지 않습니다.</string>
+    <string name="password_recheck_password_is_not_same">비밀번호와 비밀번호 재확인이 같지않습니다.</string>
+    <string name="signup_success">회원가입이 정상적으로 되었습니다.</string>
 </resources>
