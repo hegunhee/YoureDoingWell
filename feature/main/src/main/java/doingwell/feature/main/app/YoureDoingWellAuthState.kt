@@ -38,13 +38,13 @@ class YoureDoingWellAuthState(
             .createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 context.toastMessage(R.string.signup_success)
+                // db에 uid 등록
                 successCallback()
             }.addOnFailureListener {
                 if (it is FirebaseAuthUserCollisionException) {
                     context.toastMessage(R.string.email_exist)
                 }
             }
-
     }
 
     private fun Context.toastMessage(@StringRes stringRes: Int) {
