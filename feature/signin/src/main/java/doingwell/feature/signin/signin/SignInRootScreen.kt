@@ -1,5 +1,6 @@
 package doingwell.feature.signin.signin
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,15 +28,18 @@ import doingwell.feature.signin.R
 @Composable
 fun SignInRootScreen(
     paddingValues: PaddingValues,
+    onClickSignUpScreenButton : () -> Unit,
 ) {
     SignInScreen(
         paddingValues = paddingValues,
+        onClickSignUpScreenButton = onClickSignUpScreenButton,
     )
 }
 
 @Composable
 fun SignInScreen(
     paddingValues: PaddingValues,
+    onClickSignUpScreenButton : () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -85,7 +89,10 @@ fun SignInScreen(
         ) {
             Text(stringResource(R.string.find_password))
             Spacer(modifier = modifier.padding(horizontal = 10.dp))
-            Text(stringResource(R.string.sign_up))
+            Text(
+                stringResource(R.string.sign_up),
+                modifier = modifier.clickable { onClickSignUpScreenButton() }
+            )
         }
     }
 }
@@ -94,6 +101,7 @@ fun SignInScreen(
 @Composable
 fun SignInScreenPreview() {
     SignInScreen(
-        paddingValues = PaddingValues(10.dp)
+        paddingValues = PaddingValues(10.dp),
+        onClickSignUpScreenButton = {},
     )
 }
