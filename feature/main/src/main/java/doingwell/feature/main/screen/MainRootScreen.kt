@@ -32,9 +32,10 @@ fun MainScreen(
     modifier : Modifier = Modifier,
     popSignInScreen : () -> Unit,
 ) {
-    if(firebaseAuth?.currentUser == null) {
-        popSignInScreen()
-    }
+    popSignInScreen()
+//    if(firebaseAuth?.currentUser == null) {
+//        popSignInScreen()
+//    }
     Column {
         TitleText(
             modifier = modifier.padding(start = 40.dp, top = 100.dp),
