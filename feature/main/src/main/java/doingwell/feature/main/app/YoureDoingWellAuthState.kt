@@ -3,6 +3,7 @@ package doingwell.feature.main.app
 import android.content.Context
 import android.widget.Toast
 import androidx.annotation.StringRes
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import doingwell.feature.main.R
@@ -29,20 +30,24 @@ class YoureDoingWellAuthState(
             context.toastMessage(R.string.email_format_incorrect)
             return
         }
-        if(password != reCheckPassword) {
+        if (password != reCheckPassword) {
             context.toastMessage(R.string.password_recheck_password_is_not_same)
             return
         }
         auth
-            .createUserWithEmailAndPassword(email,password)
+            .createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 context.toastMessage(R.string.signup_success)
                 successCallback()
+            }.addOnFailureListener {
+                if (it is FirebaseAuthUserCollisionException) {
+                    context.toastMessage(R.string.email_exist)
+                }
             }
 
     }
 
-    private fun Context.toastMessage(@StringRes stringRes : Int) {
+    private fun Context.toastMessage(@StringRes stringRes: Int) {
         Toast.makeText(this, getText(stringRes), Toast.LENGTH_SHORT).show()
     }
 }
