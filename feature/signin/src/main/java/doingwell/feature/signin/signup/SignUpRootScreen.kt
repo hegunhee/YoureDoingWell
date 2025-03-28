@@ -1,6 +1,5 @@
 package doingwell.feature.signin.signup
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -11,14 +10,11 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +31,7 @@ import com.hegunhee.youredoingwell.ui.theme.MainGreen
 import com.hegunhee.youredoingwell.ui.theme.Typography
 import doingwell.core.ui.text.TitleText
 import doingwell.feature.signin.R
+import doingwell.feature.signin.isValidEmail
 
 @Composable
 fun SignUpRootScreen(
@@ -59,7 +56,6 @@ fun SignUpRootScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
     paddingValues: PaddingValues,
@@ -75,6 +71,16 @@ fun SignUpScreen(
 ) {
     val (passwordVisible, onChangedPasswordVisible) = remember { mutableStateOf(false) }
     val passwordVisibleImage = if(passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
+
+    val emailBorderColor = if(isValidEmail(emailText)) {
+        MainGreen
+    } else {
+        if(emailText.isEmpty()) {
+            Color.Unspecified
+        } else {
+            Color.Red
+        }
+    }
 
     val passwordBorderColor =
         if (passwordText.isBlank()) {
@@ -108,6 +114,10 @@ fun SignUpScreen(
             onValueChange = onEmailTextChanged,
             placeholder = { Text(stringResource(R.string.enter_email)) },
             modifier = itemModifier,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = emailBorderColor,
+                unfocusedBorderColor = emailBorderColor,
+            ),
         )
 
         OutlinedTextField(
