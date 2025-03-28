@@ -28,10 +28,10 @@ class YoureDoingWellAuthState(
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 context.toastMessage(R.string.success_login)
+                successCallback()
             }.addOnFailureListener {
                 context.toastMessage(R.string.email_or_password_incorrect)
             }
-        successCallback()
     }
 
     fun signUpWithEmail(
