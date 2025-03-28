@@ -39,7 +39,7 @@ import doingwell.feature.signin.getSignUpPasswordBorderColor
 fun SignUpRootScreen(
     paddingValues: PaddingValues,
     popUpBackStack: () -> Unit,
-    onClickSignUpButton: (String, String) -> Unit,
+    onClickSignUpButton: (String, String, String, () -> Unit) -> Unit,
 ) {
     val (emailText, onEmailTextChanged) = rememberSaveable { mutableStateOf("") }
     val (passwordText, onPasswordTextChanged) = rememberSaveable { mutableStateOf("") }
@@ -67,7 +67,7 @@ fun SignUpScreen(
     onEmailTextChanged: (String) -> Unit,
     onPasswordTextChanged: (String) -> Unit,
     onRecheckPasswordTextChanged: (String) -> Unit,
-    onClickSignUpButton: (String, String) -> Unit,
+    onClickSignUpButton: (String, String, String, () -> Unit) -> Unit,
     popUpBackStack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -145,7 +145,7 @@ fun SignUpScreen(
         )
 
         Button(
-            onClick = { onClickSignUpButton(emailText, recheckPasswordText) },
+            onClick = { onClickSignUpButton(emailText, passwordText, recheckPasswordText, popUpBackStack) },
             colors = ButtonDefaults.buttonColors(containerColor = MainGreen),
             modifier = itemModifier,
         ) {
@@ -172,7 +172,7 @@ private fun SignUpScreenPreview() {
         onEmailTextChanged = onEmailTextChanged,
         onPasswordTextChanged = onPasswordTextChanged,
         onRecheckPasswordTextChanged = onRecheckPasswordTextChanged,
-        onClickSignUpButton = { email, password -> },
+        onClickSignUpButton = { email, password, recheckPassword, onSuccessCallback -> },
         popUpBackStack = {},
     )
 }
