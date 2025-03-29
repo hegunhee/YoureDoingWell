@@ -68,8 +68,7 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
     fun signUpWithEmail(
         email: String,
         password: String,
-        reCheckPassword: String,
-        successCallback: () -> Unit
+        reCheckPassword: String
     ) {
         if (email.isBlank() || password.isBlank()) {
             viewModelScope.launch {
@@ -98,7 +97,6 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
                     _userData.value = authResult.user?.toUserData()
                 }
                 // db에 uid 등록
-                successCallback()
             }.addOnFailureListener {
                 if (it is FirebaseAuthUserCollisionException) {
                     viewModelScope.launch {

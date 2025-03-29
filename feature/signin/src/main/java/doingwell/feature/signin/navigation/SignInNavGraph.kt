@@ -25,8 +25,7 @@ fun NavGraphBuilder.signInNavGraph(
     paddingValues: PaddingValues,
     onClickSignInButton: (String, String, () -> Unit) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
-    popUpBack : () -> Unit,
-    onClickSignUpButton: (String, String, String, () -> Unit) -> Unit,
+    onClickSignUpButton: (String, String, String) -> Unit,
 ) {
     composable(SIGN_IN_ROUTE) {
         SignInRootScreen(
@@ -38,7 +37,6 @@ fun NavGraphBuilder.signInNavGraph(
     composable(SIGN_UP_ROUTE) {
         SignUpRootScreen(
             paddingValues = paddingValues,
-            popUpBackStack = popUpBack,
             onClickSignUpButton = onClickSignUpButton
         )
     }

@@ -1,6 +1,5 @@
 package doingwell.feature.signin.signup
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -38,8 +37,7 @@ import doingwell.feature.signin.getSignUpPasswordBorderColor
 @Composable
 fun SignUpRootScreen(
     paddingValues: PaddingValues,
-    popUpBackStack: () -> Unit,
-    onClickSignUpButton: (String, String, String, () -> Unit) -> Unit,
+    onClickSignUpButton: (String, String, String) -> Unit,
 ) {
     val (emailText, onEmailTextChanged) = rememberSaveable { mutableStateOf("") }
     val (passwordText, onPasswordTextChanged) = rememberSaveable { mutableStateOf("") }
@@ -54,7 +52,6 @@ fun SignUpRootScreen(
         onPasswordTextChanged = onPasswordTextChanged,
         onRecheckPasswordTextChanged = onRecheckPasswordTextChanged,
         onClickSignUpButton = onClickSignUpButton,
-        popUpBackStack = popUpBackStack,
     )
 }
 
@@ -67,8 +64,7 @@ fun SignUpScreen(
     onEmailTextChanged: (String) -> Unit,
     onPasswordTextChanged: (String) -> Unit,
     onRecheckPasswordTextChanged: (String) -> Unit,
-    onClickSignUpButton: (String, String, String, () -> Unit) -> Unit,
-    popUpBackStack: () -> Unit,
+    onClickSignUpButton: (String, String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val (passwordVisible, onChangedPasswordVisible) = remember { mutableStateOf(false) }
@@ -145,7 +141,7 @@ fun SignUpScreen(
         )
 
         Button(
-            onClick = { onClickSignUpButton(emailText, passwordText, recheckPasswordText, popUpBackStack) },
+            onClick = { onClickSignUpButton(emailText, passwordText, recheckPasswordText) },
             colors = ButtonDefaults.buttonColors(containerColor = MainGreen),
             modifier = itemModifier,
         ) {
@@ -172,7 +168,6 @@ private fun SignUpScreenPreview() {
         onEmailTextChanged = onEmailTextChanged,
         onPasswordTextChanged = onPasswordTextChanged,
         onRecheckPasswordTextChanged = onRecheckPasswordTextChanged,
-        onClickSignUpButton = { email, password, recheckPassword, onSuccessCallback -> },
-        popUpBackStack = {},
+        onClickSignUpButton = { email, password, recheckPassword-> },
     )
 }

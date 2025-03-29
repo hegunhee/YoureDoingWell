@@ -47,7 +47,6 @@ fun YoureDoingWellApp(
                 paddingValues = paddingValues,
                 onClickSignInButton = youreDoingWellAuthViewModel::signInWithEmailAndPassword,
                 onClickSignUpScreenButton = youreDoingWellAppState::navigateToSignUp,
-                popUpBack = youreDoingWellAppState::popBackStack,
                 onClickSignUpButton = youreDoingWellAuthViewModel::signUpWithEmail,
             )
 
