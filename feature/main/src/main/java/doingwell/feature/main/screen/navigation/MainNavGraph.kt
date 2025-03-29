@@ -19,11 +19,13 @@ fun NavGraphBuilder.mainNavGraph(
     paddingValues: PaddingValues,
     userData: UserData?,
     popSignInScreen: () -> Unit,
+    popDailyScreen: () -> Unit,
 ) {
     composable(MAIN_ROUTE) {
         MainScreenRoot(
             userData = userData,
             popSignInScreen = popSignInScreen,
+            popDailyScreen = popDailyScreen,
         )
     }
 }

@@ -37,6 +37,7 @@ fun YoureDoingWellApp(
                 paddingValues = paddingValues,
                 userData = userData,
                 popSignInScreen = youreDoingWellAppState::navigateToSignIn,
+                popDailyScreen = youreDoingWellAppState::navigateToDaily,
             )
 
             signInNavGraph(

@@ -17,6 +17,7 @@ fun MainScreenRoot(
     viewModel : MainViewModel = hiltViewModel(),
     userData: UserData?,
     popSignInScreen: () -> Unit,
+    popDailyScreen: () -> Unit,
 ) {
     MainScreen(
         userData = userData,
@@ -24,6 +25,8 @@ fun MainScreenRoot(
     LaunchedEffect(userData) {
         if(userData == null) {
             popSignInScreen()
+        } else {
+            popDailyScreen()
         }
     }
 }
