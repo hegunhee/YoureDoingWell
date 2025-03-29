@@ -35,6 +35,29 @@ fun YoureDoingWellApp(
                 popUpBack = youreDoingWellAppState::popBackStack,
                 onClickSignUpButton = youreDoingWellAuthViewModel::signUpWithEmail,
             )
+
+            composable("DAILY") {
+                Button({ youreDoingWellAuthViewModel.signOut() }) {
+                    Text("정상 로그인 $userData 로그아웃 버튼")
+                }
+            }
+        }
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(Unit) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            youreDoingWellAuthViewModel.authState.collect {
+                when(it) {
+                    AuthState.SignOut -> {
+                        youreDoingWellAppState.navController.navigate(MAIN_ROUTE)
+                    }
+                    AuthState.SignIn -> {
+                        youreDoingWellAppState.navController.navigate("DAILY")
+                    }
+                }
+            }
         }
     }
 }
