@@ -62,10 +62,10 @@ fun YoureDoingWellApp(
             youreDoingWellAuthViewModel.authState.collect {
                 when(it) {
                     AuthState.SignOut -> {
-                        youreDoingWellAppState.navController.navigate(MAIN_ROUTE)
+                        youreDoingWellAppState.navigateToMain()
                     }
                     AuthState.SignIn -> {
-                        youreDoingWellAppState.navController.navigate("DAILY")
+                        youreDoingWellAppState.navigateToDaily()
                     }
                 }
             }
