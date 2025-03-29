@@ -1,13 +1,22 @@
 package doingwell.feature.main.app
 
-import android.content.Context
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.hegunhee.model.user.UserData
+import doingwell.feature.main.app.auth.AuthState
 import doingwell.feature.main.app.auth.YoureDoingWellAuthViewModel
 import doingwell.feature.main.screen.navigation.MAIN_ROUTE
 import doingwell.feature.main.screen.navigation.mainNavGraph
@@ -18,6 +27,7 @@ fun YoureDoingWellApp(
     youreDoingWellAppState: YoureDoingWellAppState = rememberYoureDoingWellAppState(),
     youreDoingWellAuthViewModel: YoureDoingWellAuthViewModel = hiltViewModel(),
 ) {
+    val userData : UserData? = youreDoingWellAuthViewModel.userData.collectAsStateWithLifecycle().value
     Scaffold { paddingValues ->
         NavHost(
             navController = youreDoingWellAppState.navController,
@@ -25,6 +35,7 @@ fun YoureDoingWellApp(
         ) {
             mainNavGraph(
                 paddingValues = paddingValues,
+                userData = userData,
                 popSignInScreen = youreDoingWellAppState::navigateToSignIn,
             )
 
