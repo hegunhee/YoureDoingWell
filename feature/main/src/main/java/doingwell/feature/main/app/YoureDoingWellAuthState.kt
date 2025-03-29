@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
 class YoureDoingWellAuthState(
     val context: Context,
@@ -51,9 +52,12 @@ class YoureDoingWellAuthState(
             return
         }
         auth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
+            .addOnSuccessListener { authResult ->
                 context.toastMessage(R.string.success_login)
                 successCallback()
+                _signInState.update {
+                    it.copy(isSignIn = true, userData = authResult.user?.toUserData(), errorMessage = null)
+                }
             }.addOnFailureListener {
                 context.toastMessage(R.string.email_or_password_incorrect)
             }
@@ -79,10 +83,13 @@ class YoureDoingWellAuthState(
         }
         auth
             .createUserWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
+            .addOnSuccessListener { authResult ->
                 context.toastMessage(R.string.signup_success)
                 // db에 uid 등록
                 successCallback()
+                _signInState.update {
+                    it.copy(isSignIn = true, userData = authResult.user?.toUserData(), errorMessage = null)
+                }
             }.addOnFailureListener {
                 if (it is FirebaseAuthUserCollisionException) {
                     context.toastMessage(R.string.email_exist)
