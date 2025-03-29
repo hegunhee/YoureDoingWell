@@ -1,11 +1,13 @@
 package doingwell.feature.main.app
 
+import android.widget.Toast
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -21,6 +23,7 @@ import doingwell.feature.main.app.auth.YoureDoingWellAuthViewModel
 import doingwell.feature.main.screen.navigation.MAIN_ROUTE
 import doingwell.feature.main.screen.navigation.mainNavGraph
 import doingwell.feature.signin.navigation.signInNavGraph
+import kotlinx.coroutines.launch
 
 @Composable
 fun YoureDoingWellApp(
@@ -57,17 +60,25 @@ fun YoureDoingWellApp(
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            youreDoingWellAuthViewModel.authState.collect {
-                when(it) {
-                    AuthState.SignOut -> {
-                        youreDoingWellAppState.navigateToMain()
+            launch {
+                youreDoingWellAuthViewModel.authState.collect {
+                    when(it) {
+                        AuthState.SignOut -> {
+                            youreDoingWellAppState.navigateToMain()
+                        }
+                        AuthState.SignIn -> {
+                            youreDoingWellAppState.navigateToDaily()
+                        }
                     }
-                    AuthState.SignIn -> {
-                        youreDoingWellAppState.navigateToDaily()
-                    }
+                }
+            }
+            launch {
+                youreDoingWellAuthViewModel.toastMessage.collect {stringRes ->
+                    Toast.makeText(context, context.getString(stringRes), Toast.LENGTH_SHORT).show()
                 }
             }
         }
