@@ -31,22 +31,11 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
     private val _toastMessage: MutableSharedFlow<Int> = MutableSharedFlow()
     val toastMessage: SharedFlow<Int> = _toastMessage.asSharedFlow()
 
-    private val _signInState: MutableStateFlow<SignInState> = MutableStateFlow(
-        auth.currentUser?.let { firebaseUser ->
-            SignInState(isSignIn = true, userData = firebaseUser.toUserData(), errorMessage = null)
-        } ?: run {
-            SignInState.DEFAULT
-        }
-    )
-    val signInState: StateFlow<SignInState> = _signInState.asStateFlow()
+    private val _authState : MutableSharedFlow<AuthState> = MutableSharedFlow()
+    val authState : SharedFlow<AuthState> = _authState
 
-    val userData: StateFlow<UserData?> = signInState.map {
-        it.userData
-    }.stateIn(
-        scope = viewModelScope,
-        initialValue = SignInState.DEFAULT.userData,
-        started = SharingStarted.WhileSubscribed(5_000)
-    )
+    private val _userData : MutableStateFlow<UserData?> = MutableStateFlow(auth.currentUser?.toUserData())
+    val userData : StateFlow<UserData?> = _userData.asStateFlow()
 
     fun signInWithEmailAndPassword(email: String, password: String, successCallback: () -> Unit) {
         if (email.isBlank() || password.isBlank()) {
@@ -65,15 +54,10 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
             .addOnSuccessListener { authResult ->
                 viewModelScope.launch {
                     _toastMessage.emit(R.string.success_login)
+                    _authState.emit(AuthState.SignIn)
+                    _userData.value = authResult.user?.toUserData()
                 }
                 successCallback()
-                _signInState.update {
-                    it.copy(
-                        isSignIn = true,
-                        userData = authResult.user?.toUserData(),
-                        errorMessage = null
-                    )
-                }
             }.addOnFailureListener {
                 viewModelScope.launch {
                     _toastMessage.emit(R.string.email_or_password_incorrect)
@@ -110,16 +94,11 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
             .addOnSuccessListener { authResult ->
                 viewModelScope.launch {
                     _toastMessage.emit(R.string.signup_success)
+                    _authState.emit(AuthState.SignIn)
+                    _userData.value = authResult.user?.toUserData()
                 }
                 // db에 uid 등록
                 successCallback()
-                _signInState.update {
-                    it.copy(
-                        isSignIn = true,
-                        userData = authResult.user?.toUserData(),
-                        errorMessage = null
-                    )
-                }
             }.addOnFailureListener {
                 if (it is FirebaseAuthUserCollisionException) {
                     viewModelScope.launch {
@@ -131,8 +110,9 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
 
     fun signOut() {
         auth.signOut()
-        _signInState.update {
-            SignInState.DEFAULT
+        viewModelScope.launch {
+            _authState.emit(AuthState.SignOut)
+            _userData.value = null
         }
     }
 
