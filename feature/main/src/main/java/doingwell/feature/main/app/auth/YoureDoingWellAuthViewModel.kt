@@ -1,29 +1,35 @@
-package doingwell.feature.main.app
+package doingwell.feature.main.app.auth
 
-import android.content.Context
-import android.widget.Toast
-import androidx.annotation.StringRes
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hegunhee.model.user.UserData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import doingwell.feature.main.R
 import doingwell.feature.signin.isValidEmail
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class YoureDoingWellAuthState(
-    val context: Context,
-    val coroutineScope: CoroutineScope
-) {
+@HiltViewModel
+class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
+
     val auth = Firebase.auth
+
+    private val _toastMessage: MutableSharedFlow<Int> = MutableSharedFlow()
+    val toastMessage: SharedFlow<Int> = _toastMessage.asSharedFlow()
 
     private val _signInState: MutableStateFlow<SignInState> = MutableStateFlow(
         auth.currentUser?.let { firebaseUser ->
@@ -32,34 +38,46 @@ class YoureDoingWellAuthState(
             SignInState.DEFAULT
         }
     )
-    val signInState : StateFlow<SignInState> = _signInState.asStateFlow()
+    val signInState: StateFlow<SignInState> = _signInState.asStateFlow()
 
-    val userData : StateFlow<UserData?> = signInState.map {
+    val userData: StateFlow<UserData?> = signInState.map {
         it.userData
     }.stateIn(
-        scope = coroutineScope,
+        scope = viewModelScope,
         initialValue = SignInState.DEFAULT.userData,
         started = SharingStarted.WhileSubscribed(5_000)
     )
 
     fun signInWithEmailAndPassword(email: String, password: String, successCallback: () -> Unit) {
         if (email.isBlank() || password.isBlank()) {
-            context.toastMessage(R.string.email_or_password_empty)
+            viewModelScope.launch {
+                _toastMessage.emit(R.string.email_or_password_empty)
+            }
             return
         }
         if (!isValidEmail(email)) {
-            context.toastMessage(R.string.email_format_incorrect)
+            viewModelScope.launch {
+                _toastMessage.emit(R.string.email_format_incorrect)
+            }
             return
         }
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener { authResult ->
-                context.toastMessage(R.string.success_login)
+                viewModelScope.launch {
+                    _toastMessage.emit(R.string.success_login)
+                }
                 successCallback()
                 _signInState.update {
-                    it.copy(isSignIn = true, userData = authResult.user?.toUserData(), errorMessage = null)
+                    it.copy(
+                        isSignIn = true,
+                        userData = authResult.user?.toUserData(),
+                        errorMessage = null
+                    )
                 }
             }.addOnFailureListener {
-                context.toastMessage(R.string.email_or_password_incorrect)
+                viewModelScope.launch {
+                    _toastMessage.emit(R.string.email_or_password_incorrect)
+                }
             }
     }
 
@@ -70,29 +88,43 @@ class YoureDoingWellAuthState(
         successCallback: () -> Unit
     ) {
         if (email.isBlank() || password.isBlank()) {
-            context.toastMessage(R.string.email_or_password_empty)
+            viewModelScope.launch {
+                _toastMessage.emit(R.string.email_or_password_empty)
+            }
             return
         }
         if (!isValidEmail(email)) {
-            context.toastMessage(R.string.email_format_incorrect)
+            viewModelScope.launch {
+                _toastMessage.emit(R.string.email_format_incorrect)
+            }
             return
         }
         if (password != reCheckPassword) {
-            context.toastMessage(R.string.password_recheck_password_is_not_same)
+            viewModelScope.launch {
+                _toastMessage.emit(R.string.password_recheck_password_is_not_same)
+            }
             return
         }
         auth
             .createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener { authResult ->
-                context.toastMessage(R.string.signup_success)
+                viewModelScope.launch {
+                    _toastMessage.emit(R.string.signup_success)
+                }
                 // db에 uid 등록
                 successCallback()
                 _signInState.update {
-                    it.copy(isSignIn = true, userData = authResult.user?.toUserData(), errorMessage = null)
+                    it.copy(
+                        isSignIn = true,
+                        userData = authResult.user?.toUserData(),
+                        errorMessage = null
+                    )
                 }
             }.addOnFailureListener {
                 if (it is FirebaseAuthUserCollisionException) {
-                    context.toastMessage(R.string.email_exist)
+                    viewModelScope.launch {
+                        _toastMessage.emit(R.string.email_exist)
+                    }
                 }
             }
     }
@@ -102,10 +134,6 @@ class YoureDoingWellAuthState(
         _signInState.update {
             SignInState.DEFAULT
         }
-    }
-
-    private fun Context.toastMessage(@StringRes stringRes: Int) {
-        Toast.makeText(this, getText(stringRes), Toast.LENGTH_SHORT).show()
     }
 }
 
