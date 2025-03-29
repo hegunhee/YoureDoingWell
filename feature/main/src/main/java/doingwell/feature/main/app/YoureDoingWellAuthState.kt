@@ -97,6 +97,13 @@ class YoureDoingWellAuthState(
             }
     }
 
+    fun signOut() {
+        auth.signOut()
+        _signInState.update {
+            SignInState.DEFAULT
+        }
+    }
+
     private fun Context.toastMessage(@StringRes stringRes: Int) {
         Toast.makeText(this, getText(stringRes), Toast.LENGTH_SHORT).show()
     }
