@@ -135,22 +135,9 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
             SignInState.DEFAULT
         }
     }
-}
 
-data class SignInState(
-    val isSignIn: Boolean,
-    val userData: UserData?,
-    val errorMessage: String?,
-) {
-    companion object {
-        val DEFAULT = SignInState(
-            isSignIn = false,
-            userData = null,
-            errorMessage = null,
-        )
+    private fun FirebaseUser.toUserData(): UserData {
+        return UserData(uid, email, photoUrl.toString())
     }
-}
 
-fun FirebaseUser.toUserData(): UserData {
-    return UserData(uid, email, photoUrl.toString())
 }
