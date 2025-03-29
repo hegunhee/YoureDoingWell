@@ -13,6 +13,7 @@ dependencies {
 
     add("implementation",project(":core:designsystem"))
     add("implementation",project(":core:ui"))
+    add("implementation",project(":core:model"))
 
     add("implementation", libs.findLibrary("androidx-core-ktx").get())
     add("implementation", libs.findLibrary("androidx-activity-compose").get())
