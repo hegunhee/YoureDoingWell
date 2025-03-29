@@ -39,7 +39,7 @@ import doingwell.feature.signin.getEmailBoarderColor
 @Composable
 fun SignInRootScreen(
     paddingValues: PaddingValues,
-    onClickSignInButton: (String, String, () -> Unit) -> Unit,
+    onClickSignInButton: (String, String) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
 ) {
     val (emailText, onEmailTextChanged) = rememberSaveable { mutableStateOf("") }
@@ -63,7 +63,7 @@ fun SignInScreen(
     passwordText: String,
     onEmailTextChanged: (String) -> Unit,
     onPasswordTextChanged: (String) -> Unit,
-    onClickSignInButton : (String, String, () -> Unit) -> Unit,
+    onClickSignInButton : (String, String) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -116,7 +116,7 @@ fun SignInScreen(
         )
 
         Button(
-            onClick = { onClickSignInButton(emailText,passwordText,{})},
+            onClick = { onClickSignInButton(emailText,passwordText)},
             colors = ButtonDefaults.buttonColors(containerColor = MainGreen),
             modifier = itemModifier,
         ) {
@@ -152,7 +152,7 @@ fun SignInScreenPreview() {
         passwordText = passwordText,
         onEmailTextChanged = onEmailTextChanged,
         onPasswordTextChanged = onPasswordTextChanged,
-        onClickSignInButton = {email, password, onSuccessCallback -> },
+        onClickSignInButton = {email, password -> },
         onClickSignUpScreenButton = {},
     )
 }

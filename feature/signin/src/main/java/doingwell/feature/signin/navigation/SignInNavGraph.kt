@@ -23,7 +23,7 @@ fun NavController.navigateSignUp() {
 
 fun NavGraphBuilder.signInNavGraph(
     paddingValues: PaddingValues,
-    onClickSignInButton: (String, String, () -> Unit) -> Unit,
+    onClickSignInButton: (String, String) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
     onClickSignUpButton: (String, String, String) -> Unit,
 ) {

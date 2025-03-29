@@ -13,13 +13,9 @@ import doingwell.feature.signin.isValidEmail
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,7 +33,7 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
     private val _userData : MutableStateFlow<UserData?> = MutableStateFlow(auth.currentUser?.toUserData())
     val userData : StateFlow<UserData?> = _userData.asStateFlow()
 
-    fun signInWithEmailAndPassword(email: String, password: String, successCallback: () -> Unit) {
+    fun signInWithEmailAndPassword(email: String, password: String) {
         if (email.isBlank() || password.isBlank()) {
             viewModelScope.launch {
                 _toastMessage.emit(R.string.email_or_password_empty)
@@ -57,7 +53,6 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
                     _authState.emit(AuthState.SignIn)
                     _userData.value = authResult.user?.toUserData()
                 }
-                successCallback()
             }.addOnFailureListener {
                 viewModelScope.launch {
                     _toastMessage.emit(R.string.email_or_password_incorrect)
