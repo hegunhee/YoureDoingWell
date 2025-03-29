@@ -5,4 +5,6 @@
     <string name="password_recheck_password_is_not_same">비밀번호와 비밀번호 재확인이 같지않습니다.</string>
     <string name="signup_success">회원가입이 정상적으로 되었습니다.</string>
     <string name="email_exist">이미 존재하는 이메일 입니다.</string>
+    <string name="success_login">로그인 완료</string>
+    <string name="email_or_password_incorrect">이메일 혹은 비밀번호가 틀렸습니다.</string>
 </resources>

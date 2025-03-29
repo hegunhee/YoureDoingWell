@@ -16,6 +16,24 @@ class YoureDoingWellAuthState(
 ) {
     val auth = Firebase.auth
 
+    fun signInWithEmailAndPassword(email: String, password: String, successCallback: () -> Unit) {
+        if (email.isBlank() || password.isBlank()) {
+            context.toastMessage(R.string.email_or_password_empty)
+            return
+        }
+        if (!isValidEmail(email)) {
+            context.toastMessage(R.string.email_format_incorrect)
+            return
+        }
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnSuccessListener {
+                context.toastMessage(R.string.success_login)
+                successCallback()
+            }.addOnFailureListener {
+                context.toastMessage(R.string.email_or_password_incorrect)
+            }
+    }
+
     fun signUpWithEmail(
         email: String,
         password: String,
