@@ -39,6 +39,7 @@ fun NavGraphBuilder.signInNavGraph(
     onClickSignUpButton: (String, String, String) -> Unit,
     onClickPasswordResetButton: (String) -> Unit,
     onClickEmailSend: (String) -> Unit,
+    onClickGoogleSignIn: (String) -> Unit,
 ) {
     composable(SIGN_IN_ROUTE) {
         SignInRootScreen(
@@ -46,6 +47,7 @@ fun NavGraphBuilder.signInNavGraph(
             onClickSignInButton = onClickSignInButton,
             onClickSignUpScreenButton = onClickSignUpScreenButton,
             onClickPasswordResetButton = onClickPasswordResetButton,
+            onClickGoogleSignIn = onClickGoogleSignIn,
         )
     }
     composable(SIGN_UP_ROUTE) {

@@ -1,10 +1,8 @@
 package doingwell.feature.signin.signin
 
 import android.app.Activity
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,7 +32,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -43,10 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.GoogleAuthProvider
 import com.hegunhee.youredoingwell.ui.theme.MainGreen
 import com.hegunhee.youredoingwell.ui.theme.Typography
 import doingwell.core.ui.text.TitleText
@@ -61,11 +55,10 @@ fun SignInRootScreen(
     onClickSignInButton: (String, String) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
     onClickPasswordResetButton: (String) -> Unit,
+    onClickGoogleSignIn : (String) -> Unit,
 ) {
     val (emailText, onEmailTextChanged) = rememberSaveable { mutableStateOf("") }
     val (passwordText, onPasswordTextChanged) = rememberSaveable { mutableStateOf("") }
-
-    val context = LocalContext.current
 
     val googleAuthLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult()
@@ -74,7 +67,7 @@ fun SignInRootScreen(
             if(result.resultCode == Activity.RESULT_OK) {
                 val credentials = viewModel.signInClient.getSignInCredentialFromIntent(result.data)
                 val googleIdToken = credentials.googleIdToken
-                Log.d("RESULT!!!",googleIdToken.toString())
+                googleIdToken?.let(onClickGoogleSignIn)
             }
         } catch (e: ApiException) {
             e.printStackTrace()
@@ -90,8 +83,6 @@ fun SignInRootScreen(
                     .Builder(result.pendingIntent.intentSender)
                     .build()
                 googleAuthLauncher.launch(intentSenderRequest)
-            }.addOnFailureListener {
-                Log.d("RESULT!!!","failure ${it.toString()}")
             }
         Unit
     }
