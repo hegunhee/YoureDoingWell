@@ -11,7 +11,7 @@ const val MAIN_ROUTE = "MAIN_ROUTE"
 
 fun NavController.navigateToMain() {
     navigate(MAIN_ROUTE) {
-        popUpTo(graph.startDestinationId) { inclusive = true }
+        popUpTo(graph.id) { inclusive = true }
     }
 }
 

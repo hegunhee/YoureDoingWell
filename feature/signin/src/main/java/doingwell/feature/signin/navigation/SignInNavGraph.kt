@@ -13,7 +13,7 @@ const val SIGN_UP_ROUTE = "SIGN_UP_ROUTE"
 
 fun NavController.navigateSignIn() {
     navigate(SIGN_IN_ROUTE) {
-        popUpTo(graph.startDestinationId) { inclusive = true}
+        popUpTo(graph.id) { inclusive = true }
     }
 }
 
