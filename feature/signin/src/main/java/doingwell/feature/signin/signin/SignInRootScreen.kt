@@ -28,6 +28,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -60,6 +61,7 @@ fun SignInRootScreen(
         onClickSignInButton = onClickSignInButton,
         onClickSignUpScreenButton = onClickSignUpScreenButton,
         onClickPasswordResetButton = onClickPasswordResetButton,
+        onClickGoogleAuthButton = {},
     )
 }
 
@@ -73,6 +75,7 @@ fun SignInScreen(
     onClickSignInButton : (String, String) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
     onClickPasswordResetButton: (String) -> Unit,
+    onClickGoogleAuthButton: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val (passwordVisible, onChangedPasswordVisible) = remember { mutableStateOf(false) }
@@ -170,6 +173,20 @@ fun SignInScreen(
                 .height(1.dp)
                 .background(Color.Gray))
         }
+
+        Spacer(modifier = modifier.padding(top = 20.dp))
+
+        Row {
+            IconButton({ onClickGoogleAuthButton("") }) {
+                Icon(
+                    painter = painterResource(R.drawable.google_auth),
+                    contentDescription = stringResource(
+                        R.string.google_auth_content_description
+                    ),
+                    tint = Color.Unspecified
+                )
+            }
+        }
     }
 }
 
@@ -188,5 +205,6 @@ fun SignInScreenPreview() {
         onClickSignInButton = {email, password -> },
         onClickSignUpScreenButton = {},
         onClickPasswordResetButton = {},
+        onClickGoogleAuthButton = {},
     )
 }
