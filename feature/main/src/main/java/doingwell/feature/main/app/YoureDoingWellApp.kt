@@ -50,6 +50,7 @@ fun YoureDoingWellApp(
                 onClickSignUpButton = youreDoingWellAuthViewModel::signUpWithEmail,
                 onClickPasswordResetButton = youreDoingWellAppState::navigateToResetPasswordReset,
                 onClickEmailSend = youreDoingWellAuthViewModel::resetPasswordWithEmail,
+                onClickGoogleSignIn = youreDoingWellAuthViewModel::signInWithGoogle,
             )
 
             composable("DAILY") {

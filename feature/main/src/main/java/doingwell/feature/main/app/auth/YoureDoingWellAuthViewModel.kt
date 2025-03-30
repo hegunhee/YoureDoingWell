@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hegunhee.model.user.UserData
@@ -97,6 +98,18 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
                     viewModelScope.launch {
                         _toastMessage.emit(R.string.email_exist)
                     }
+                }
+            }
+    }
+
+    fun signInWithGoogle(googleIdToken : String) {
+        val googleCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
+        auth.signInWithCredential(googleCredential)
+            .addOnSuccessListener { authResult ->
+                viewModelScope.launch {
+                    _toastMessage.emit(R.string.success_login)
+                    _authState.emit(AuthState.SignIn)
+                    _userData.value = authResult.user?.toUserData()
                 }
             }
     }

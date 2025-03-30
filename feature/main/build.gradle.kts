@@ -13,4 +13,5 @@ dependencies {
 
     add("implementation", platform(libs.firebase.bom))
     add("implementation", libs.firebase.authenticate)
+    add("implementation", libs.gms.play.services.auth)
 }
