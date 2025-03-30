@@ -130,7 +130,7 @@ fun SignInScreen(
             modifier = itemModifier,
             horizontalArrangement = Arrangement.End,
         ) {
-            Text(stringResource(R.string.find_password))
+            Text(stringResource(R.string.reset_password))
             Spacer(modifier = modifier.padding(horizontal = 10.dp))
             Text(
                 stringResource(R.string.sign_up),
