@@ -1,5 +1,6 @@
 package doingwell.feature.signin.signin
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,7 +8,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -30,6 +33,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.hegunhee.youredoingwell.ui.theme.MainGreen
 import com.hegunhee.youredoingwell.ui.theme.Typography
 import doingwell.core.ui.text.TitleText
@@ -143,6 +147,28 @@ fun SignInScreen(
                 stringResource(R.string.sign_up),
                 modifier = modifier.clickable { onClickSignUpScreenButton() }
             )
+        }
+
+        Row(
+            modifier = itemModifier,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Spacer(modifier = modifier
+                .weight(1f)
+                .height(1.dp)
+                .background(Color.Gray))
+            Text(
+                text = stringResource(R.string.another_login),
+                modifier = modifier
+                    .padding(horizontal = 10.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally),
+                fontSize = 13.sp,
+                maxLines = 1,
+            )
+            Spacer(modifier = modifier
+                .weight(1f)
+                .height(1.dp)
+                .background(Color.Gray))
         }
     }
 }
