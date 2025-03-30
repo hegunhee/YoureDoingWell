@@ -1,9 +1,11 @@
 package doingwell.feature.main.app.auth
 
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.identity.SignInCredential
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -22,10 +24,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class YoureDoingWellAuthViewModel @Inject constructor(
-    private val signInClient: SignInClient,
-    private val signInRequest: BeginSignInRequest,
-) : ViewModel() {
+class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
 
     val auth = Firebase.auth
 

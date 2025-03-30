@@ -42,9 +42,9 @@ fun NavGraphBuilder.signInNavGraph(
 ) {
     composable(SIGN_IN_ROUTE) {
         SignInRootScreen(
-            paddingValues,
+            paddingValues = paddingValues,
             onClickSignInButton = onClickSignInButton,
-            onClickSignUpScreenButton,
+            onClickSignUpScreenButton = onClickSignUpScreenButton,
             onClickPasswordResetButton = onClickPasswordResetButton,
         )
     }
