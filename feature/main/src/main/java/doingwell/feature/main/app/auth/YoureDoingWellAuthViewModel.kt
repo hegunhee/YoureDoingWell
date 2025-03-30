@@ -101,6 +101,15 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
             }
     }
 
+    fun resetPasswordWithEmail(email:String) {
+        auth.sendPasswordResetEmail(email)
+            .addOnSuccessListener {
+                viewModelScope.launch {
+                    _toastMessage.emit(doingwell.feature.signin.R.string.password_reset_email_send)
+                }
+            }
+    }
+
     fun signOut() {
         auth.signOut()
         viewModelScope.launch {
