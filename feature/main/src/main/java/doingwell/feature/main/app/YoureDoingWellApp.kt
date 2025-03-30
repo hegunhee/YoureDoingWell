@@ -48,6 +48,7 @@ fun YoureDoingWellApp(
                 onClickSignInButton = youreDoingWellAuthViewModel::signInWithEmailAndPassword,
                 onClickSignUpScreenButton = youreDoingWellAppState::navigateToSignUp,
                 onClickSignUpButton = youreDoingWellAuthViewModel::signUpWithEmail,
+                onClickPasswordResetButton = youreDoingWellAppState::navigateToResetPasswordReset,
             )
 
             composable("DAILY") {
