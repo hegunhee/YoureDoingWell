@@ -7,4 +7,7 @@
     <string name="email_exist">이미 존재하는 이메일 입니다.</string>
     <string name="success_login">로그인 완료</string>
     <string name="email_or_password_incorrect">이메일 혹은 비밀번호가 틀렸습니다.</string>
+
+
+    <string name="default_web_client_id">898801493563-e60m5likbebfl82s5forl2011immhkid.apps.googleusercontent.com</string>
 </resources>
