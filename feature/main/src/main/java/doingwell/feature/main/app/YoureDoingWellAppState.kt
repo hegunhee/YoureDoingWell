@@ -6,6 +6,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import doingwell.feature.main.screen.navigation.navigateToMain
+import doingwell.feature.signin.navigation.navigatePasswordReset
 import doingwell.feature.signin.navigation.navigateSignIn
 import doingwell.feature.signin.navigation.navigateSignUp
 
@@ -28,6 +29,10 @@ class YoureDoingWellAppState(
         navController.navigate("DAILY") {
             popUpTo(navController.graph.id) { inclusive = true }
         }
+    }
+
+    fun navigateToResetPasswordReset(email: String) {
+        navController.navigatePasswordReset(email)
     }
 
     fun navigateToMain() {

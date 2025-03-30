@@ -35,12 +35,14 @@ import com.hegunhee.youredoingwell.ui.theme.Typography
 import doingwell.core.ui.text.TitleText
 import doingwell.feature.signin.R
 import doingwell.feature.signin.getEmailBoarderColor
+import doingwell.feature.signin.isValidEmail
 
 @Composable
 fun SignInRootScreen(
     paddingValues: PaddingValues,
     onClickSignInButton: (String, String) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
+    onClickPasswordResetButton: (String) -> Unit,
 ) {
     val (emailText, onEmailTextChanged) = rememberSaveable { mutableStateOf("") }
     val (passwordText, onPasswordTextChanged) = rememberSaveable { mutableStateOf("") }
@@ -53,6 +55,7 @@ fun SignInRootScreen(
         onPasswordTextChanged = onPasswordTextChanged,
         onClickSignInButton = onClickSignInButton,
         onClickSignUpScreenButton = onClickSignUpScreenButton,
+        onClickPasswordResetButton = onClickPasswordResetButton,
     )
 }
 
@@ -65,6 +68,7 @@ fun SignInScreen(
     onPasswordTextChanged: (String) -> Unit,
     onClickSignInButton : (String, String) -> Unit,
     onClickSignUpScreenButton : () -> Unit,
+    onClickPasswordResetButton: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val (passwordVisible, onChangedPasswordVisible) = remember { mutableStateOf(false) }
@@ -130,7 +134,10 @@ fun SignInScreen(
             modifier = itemModifier,
             horizontalArrangement = Arrangement.End,
         ) {
-            Text(stringResource(R.string.find_password))
+            Text(
+                stringResource(R.string.reset_password),
+                modifier = modifier.clickable { onClickPasswordResetButton(if (isValidEmail(emailText)) emailText else "") }
+            )
             Spacer(modifier = modifier.padding(horizontal = 10.dp))
             Text(
                 stringResource(R.string.sign_up),
@@ -154,5 +161,6 @@ fun SignInScreenPreview() {
         onPasswordTextChanged = onPasswordTextChanged,
         onClickSignInButton = {email, password -> },
         onClickSignUpScreenButton = {},
+        onClickPasswordResetButton = {},
     )
 }
