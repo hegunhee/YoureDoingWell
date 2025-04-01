@@ -22,8 +22,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "YoureDoingWell"
 include(":app")
-include(":feature:main")
+
 include(":core:designsystem")
-include(":feature:signin")
 include(":core:ui")
 include(":core:model")
+include(":core:domain")
+include(":core:data")
+
+include(":feature:main")
+include(":feature:signin")
