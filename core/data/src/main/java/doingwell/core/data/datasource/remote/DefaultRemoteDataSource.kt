@@ -14,7 +14,7 @@ class DefaultRemoteDataSource @Inject constructor(
 
     val database = Firebase.database
 
-    override suspend fun insertUid(userData: UserData): String {
+    override suspend fun insertUserData(userData: UserData): String {
         return try {
             database.getReference("User").child(userData.uid).setValue(userData).await()
             userData.uid

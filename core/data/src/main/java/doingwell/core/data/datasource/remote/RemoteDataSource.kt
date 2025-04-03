@@ -4,7 +4,7 @@ import com.hegunhee.model.user.UserData
 
 interface RemoteDataSource {
 
-    suspend fun insertUid(userData: UserData): String
+    suspend fun insertUserData(userData: UserData): String
 
     suspend fun findUser(uid: String): UserData?
 

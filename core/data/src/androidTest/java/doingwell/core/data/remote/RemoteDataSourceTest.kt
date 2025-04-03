@@ -3,7 +3,6 @@ package doingwell.core.data.remote
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.hegunhee.model.user.UserData
@@ -41,7 +40,7 @@ class RemoteDataSourceTest {
             val userData = UserData(uid = "TEST", email = "TEST_EMAIL", photoUrl = "TEST_PHOTO_URL")
 
             // when
-            val resultUid = sut.insertUid(userData)
+            val resultUid = sut.insertUserData(userData)
 
             // then
             assertEquals(resultUid, userData.uid)
@@ -58,8 +57,8 @@ class RemoteDataSourceTest {
             val uid = "TEST1"
             val userData1 = UserData(uid = uid, email = "TEST_EMAIL1", photoUrl = "TEST_PHOTO_URL1")
             val userData2 = UserData(uid = "TEST2", email = "TEST_EMAIL2", photoUrl = "TEST_PHOTO_URL2")
-            sut.insertUid(userData1)
-            sut.insertUid(userData2)
+            sut.insertUserData(userData1)
+            sut.insertUserData(userData2)
 
             // when
             val findUser = sut.findUser(uid)
