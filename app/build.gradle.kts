@@ -23,4 +23,6 @@ dependencies {
     add("implementation", libs.firebase.realtimeDatabase)
 
     add("implementation",project(":feature:main"))
+    implementation(project(":core:data"))
+    implementation(project(":core:domain"))
 }

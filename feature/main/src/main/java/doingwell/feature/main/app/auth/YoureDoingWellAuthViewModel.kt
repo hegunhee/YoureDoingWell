@@ -9,6 +9,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hegunhee.model.user.UserData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import doingwell.core.domain.usecase.auth.InsertUserUseCase
 import doingwell.feature.main.R
 import doingwell.feature.signin.isValidEmail
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,18 +22,21 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
+class YoureDoingWellAuthViewModel @Inject constructor(
+    private val insertUserUseCase: InsertUserUseCase,
+) : ViewModel() {
 
     val auth = Firebase.auth
 
     private val _toastMessage: MutableSharedFlow<Int> = MutableSharedFlow()
     val toastMessage: SharedFlow<Int> = _toastMessage.asSharedFlow()
 
-    private val _authState : MutableSharedFlow<AuthState> = MutableSharedFlow()
-    val authState : SharedFlow<AuthState> = _authState
+    private val _authState: MutableSharedFlow<AuthState> = MutableSharedFlow()
+    val authState: SharedFlow<AuthState> = _authState
 
-    private val _userData : MutableStateFlow<UserData?> = MutableStateFlow(auth.currentUser?.toUserData())
-    val userData : StateFlow<UserData?> = _userData.asStateFlow()
+    private val _userData: MutableStateFlow<UserData?> =
+        MutableStateFlow(auth.currentUser?.toUserData())
+    val userData: StateFlow<UserData?> = _userData.asStateFlow()
 
     fun signInWithEmailAndPassword(email: String, password: String) {
         if (email.isBlank() || password.isBlank()) {
@@ -50,9 +54,13 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener { authResult ->
                 viewModelScope.launch {
-                    _toastMessage.emit(R.string.success_login)
-                    _authState.emit(AuthState.SignIn)
-                    _userData.value = authResult.user?.toUserData()
+                    authResult?.user?.toUserData()?.let { userData ->
+                        insertUserUseCase(userData)
+                        _toastMessage.emit(R.string.success_login)
+                        _authState.emit(AuthState.SignIn)
+                        _userData.value = authResult.user?.toUserData()
+                    }
+
                 }
             }.addOnFailureListener {
                 viewModelScope.launch {
@@ -88,11 +96,13 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
             .createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener { authResult ->
                 viewModelScope.launch {
-                    _toastMessage.emit(R.string.signup_success)
-                    _authState.emit(AuthState.SignIn)
-                    _userData.value = authResult.user?.toUserData()
+                    authResult.user?.toUserData()?.let { userData ->
+                        insertUserUseCase(userData)
+                        _toastMessage.emit(R.string.signup_success)
+                        _authState.emit(AuthState.SignIn)
+                        _userData.value = userData
+                    }
                 }
-                // db에 uid 등록
             }.addOnFailureListener {
                 if (it is FirebaseAuthUserCollisionException) {
                     viewModelScope.launch {
@@ -102,19 +112,22 @@ class YoureDoingWellAuthViewModel @Inject constructor() : ViewModel() {
             }
     }
 
-    fun signInWithGoogle(googleIdToken : String) {
+    fun signInWithGoogle(googleIdToken: String) {
         val googleCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
         auth.signInWithCredential(googleCredential)
             .addOnSuccessListener { authResult ->
                 viewModelScope.launch {
-                    _toastMessage.emit(R.string.success_login)
-                    _authState.emit(AuthState.SignIn)
-                    _userData.value = authResult.user?.toUserData()
+                    authResult.user?.toUserData()?.let { userData ->
+                        insertUserUseCase(userData)
+                        _toastMessage.emit(R.string.success_login)
+                        _authState.emit(AuthState.SignIn)
+                        _userData.value = userData
+                    }
                 }
             }
     }
 
-    fun resetPasswordWithEmail(email:String) {
+    fun resetPasswordWithEmail(email: String) {
         auth.sendPasswordResetEmail(email)
             .addOnSuccessListener {
                 viewModelScope.launch {
