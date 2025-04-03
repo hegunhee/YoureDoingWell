@@ -5,6 +5,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.hegunhee.model.user.UserData
 import doingwell.core.data.datasource.remote.DefaultRemoteDataSource
 import doingwell.core.data.datasource.remote.RemoteDataSource
@@ -30,7 +32,7 @@ class RemoteDataSourceTest {
                 .build()
             FirebaseApp.initializeApp(context, options)
         }
-        sut = DefaultRemoteDataSource()
+        sut = DefaultRemoteDataSource(Firebase.database.getReference("TEST"))
     }
 
     @Test
