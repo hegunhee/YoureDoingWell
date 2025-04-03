@@ -1,6 +1,9 @@
 package doingwell.feature.signin.signin
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,6 +35,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -39,6 +43,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.common.api.ApiException
 import com.hegunhee.youredoingwell.ui.theme.MainGreen
@@ -53,9 +58,9 @@ fun SignInRootScreen(
     viewModel: SignInViewModel = hiltViewModel(),
     paddingValues: PaddingValues,
     onClickSignInButton: (String, String) -> Unit,
-    onClickSignUpScreenButton : () -> Unit,
+    onClickSignUpScreenButton: () -> Unit,
     onClickPasswordResetButton: (String) -> Unit,
-    onClickGoogleSignIn : (String) -> Unit,
+    onClickGoogleSignIn: (String) -> Unit,
 ) {
     val (emailText, onEmailTextChanged) = rememberSaveable { mutableStateOf("") }
     val (passwordText, onPasswordTextChanged) = rememberSaveable { mutableStateOf("") }
@@ -64,7 +69,7 @@ fun SignInRootScreen(
         contract = ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
         try {
-            if(result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == Activity.RESULT_OK) {
                 val credentials = viewModel.signInClient.getSignInCredentialFromIntent(result.data)
                 val googleIdToken = credentials.googleIdToken
                 googleIdToken?.let(onClickGoogleSignIn)
@@ -75,6 +80,8 @@ fun SignInRootScreen(
         }
     }
 
+    val context = LocalContext.current
+
     val onClickGoogleAuth = {
         viewModel.signInClient.signOut()
         viewModel.signInClient.beginSignIn(viewModel.signInRequest)
@@ -83,6 +90,16 @@ fun SignInRootScreen(
                     .Builder(result.pendingIntent.intentSender)
                     .build()
                 googleAuthLauncher.launch(intentSenderRequest)
+            }.addOnFailureListener {
+                if (it is ApiException) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.intent_google_login), Toast.LENGTH_SHORT
+                    ).show()
+                    val googleSignInUrl = "https://accounts.google.com/signin"
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSignInUrl))
+                    context.startActivity(intent)
+                }
             }
         Unit
     }
@@ -107,14 +124,15 @@ fun SignInScreen(
     passwordText: String,
     onEmailTextChanged: (String) -> Unit,
     onPasswordTextChanged: (String) -> Unit,
-    onClickSignInButton : (String, String) -> Unit,
-    onClickSignUpScreenButton : () -> Unit,
+    onClickSignInButton: (String, String) -> Unit,
+    onClickSignUpScreenButton: () -> Unit,
     onClickPasswordResetButton: (String) -> Unit,
     onClickGoogleAuthButton: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val (passwordVisible, onChangedPasswordVisible) = remember { mutableStateOf(false) }
-    val passwordVisibleImage = if(passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
+    val passwordVisibleImage =
+        if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
 
     val emailBorderColor = getEmailBoarderColor(emailText)
 
@@ -155,14 +173,17 @@ fun SignInScreen(
             },
             trailingIcon = {
                 IconButton({ onChangedPasswordVisible(!passwordVisible) }) {
-                    Icon(imageVector = passwordVisibleImage, contentDescription = stringResource(R.string.visible_password))
+                    Icon(
+                        imageVector = passwordVisibleImage,
+                        contentDescription = stringResource(R.string.visible_password)
+                    )
                 }
             },
             modifier = itemModifier,
         )
 
         Button(
-            onClick = { onClickSignInButton(emailText,passwordText)},
+            onClick = { onClickSignInButton(emailText, passwordText) },
             colors = ButtonDefaults.buttonColors(containerColor = MainGreen),
             modifier = itemModifier,
         ) {
@@ -178,7 +199,14 @@ fun SignInScreen(
         ) {
             Text(
                 stringResource(R.string.reset_password),
-                modifier = modifier.clickable { onClickPasswordResetButton(if (isValidEmail(emailText)) emailText else "") }
+                modifier = modifier.clickable {
+                    onClickPasswordResetButton(
+                        if (isValidEmail(
+                                emailText
+                            )
+                        ) emailText else ""
+                    )
+                }
             )
             Spacer(modifier = modifier.padding(horizontal = 10.dp))
             Text(
@@ -191,10 +219,12 @@ fun SignInScreen(
             modifier = itemModifier,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Spacer(modifier = modifier
-                .weight(1f)
-                .height(1.dp)
-                .background(Color.Gray))
+            Spacer(
+                modifier = modifier
+                    .weight(1f)
+                    .height(1.dp)
+                    .background(Color.Gray)
+            )
             Text(
                 text = stringResource(R.string.another_login),
                 modifier = modifier
@@ -203,10 +233,12 @@ fun SignInScreen(
                 fontSize = 13.sp,
                 maxLines = 1,
             )
-            Spacer(modifier = modifier
-                .weight(1f)
-                .height(1.dp)
-                .background(Color.Gray))
+            Spacer(
+                modifier = modifier
+                    .weight(1f)
+                    .height(1.dp)
+                    .background(Color.Gray)
+            )
         }
 
         Spacer(modifier = modifier.padding(top = 20.dp))
@@ -237,7 +269,7 @@ fun SignInScreenPreview() {
         passwordText = passwordText,
         onEmailTextChanged = onEmailTextChanged,
         onPasswordTextChanged = onPasswordTextChanged,
-        onClickSignInButton = {email, password -> },
+        onClickSignInButton = { email, password -> },
         onClickSignUpScreenButton = {},
         onClickPasswordResetButton = {},
         onClickGoogleAuthButton = {},
