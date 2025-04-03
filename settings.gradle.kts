@@ -31,3 +31,4 @@ include(":core:data")
 
 include(":feature:main")
 include(":feature:signin")
+include(":feature:daily")
