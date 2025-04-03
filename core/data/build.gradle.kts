@@ -12,5 +12,6 @@ dependencies {
     implementation(project(":core:model"))
 
     implementation(libs.firebase.realtimeDatabase)
+    testImplementation(libs.assertj.core)
 
 }

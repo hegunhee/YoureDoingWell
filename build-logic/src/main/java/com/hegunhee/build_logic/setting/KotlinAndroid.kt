@@ -44,6 +44,7 @@ internal fun Project.configureKotlinAndroid() {
             add("testImplementation",libs.findLibrary("junit").get())
             add("androidTestImplementation",libs.findLibrary("androidx-junit").get())
             add("androidTestImplementation",libs.findLibrary("androidx-espresso-core").get())
+            add("testImplementation", libs.findLibrary("mockito-kotlin").get())
         }
         // Junit 관련 의존성 추가
     }
