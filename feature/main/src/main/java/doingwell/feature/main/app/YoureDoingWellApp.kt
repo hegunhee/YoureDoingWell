@@ -1,9 +1,7 @@
 package doingwell.feature.main.app
 
 import android.widget.Toast
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -15,8 +13,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.hegunhee.daily.navigation.dailyNavGraph
 import com.hegunhee.model.user.UserData
 import doingwell.feature.main.app.auth.AuthState
 import doingwell.feature.main.app.auth.YoureDoingWellAuthViewModel
@@ -53,11 +51,11 @@ fun YoureDoingWellApp(
                 onClickGoogleSignIn = youreDoingWellAuthViewModel::signInWithGoogle,
             )
 
-            composable("DAILY") {
-                Button({ youreDoingWellAuthViewModel.signOut() }) {
-                    Text("정상 로그인 $userData 로그아웃 버튼")
-                }
-            }
+            dailyNavGraph(
+                paddingValues = paddingValues,
+                userData = userData,
+                onClickSignOut = youreDoingWellAuthViewModel::signOut,
+            )
         }
     }
 

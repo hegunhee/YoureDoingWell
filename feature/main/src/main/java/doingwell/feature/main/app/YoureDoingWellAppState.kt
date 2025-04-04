@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.hegunhee.daily.navigation.navigateDaily
 import doingwell.feature.main.screen.navigation.navigateToMain
 import doingwell.feature.signin.navigation.navigatePasswordReset
 import doingwell.feature.signin.navigation.navigateSignIn
@@ -26,9 +27,7 @@ class YoureDoingWellAppState(
     }
 
     fun navigateToDaily() {
-        navController.navigate("DAILY") {
-            popUpTo(navController.graph.id) { inclusive = true }
-        }
+        navController.navigateDaily()
     }
 
     fun navigateToResetPasswordReset(email: String) {
@@ -38,6 +37,7 @@ class YoureDoingWellAppState(
     fun navigateToMain() {
         navController.navigateToMain()
     }
+
     fun popBackStack() {
         navController.popBackStack()
     }
