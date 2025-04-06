@@ -8,17 +8,15 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import doingwell.feature.main.R
-import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object FirebaseModule {
 
     @Provides
-    @Singleton
     fun provideSignInClient(
         @ApplicationContext context : Context,
     ): SignInClient {
@@ -26,7 +24,6 @@ object FirebaseModule {
     }
 
     @Provides
-    @Singleton
     fun provideSignInRequest(@ApplicationContext context: Context): BeginSignInRequest {
         return BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
