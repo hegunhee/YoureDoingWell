@@ -1,7 +1,9 @@
 package doingwell.feature.main.app
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -13,11 +15,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hegunhee.daily.navigation.dailyNavGraph
 import com.hegunhee.model.user.UserData
 import doingwell.feature.main.app.auth.AuthState
 import doingwell.feature.main.app.auth.YoureDoingWellAuthViewModel
+import doingwell.feature.main.app.bottom.ADD_RECORD_ROUTE
+import doingwell.feature.main.app.bottom.SETTING_ROUTE
 import doingwell.feature.main.screen.navigation.MAIN_ROUTE
 import doingwell.feature.main.screen.navigation.mainNavGraph
 import doingwell.feature.signin.navigation.signInNavGraph
@@ -56,6 +61,28 @@ fun YoureDoingWellApp(
                 userData = userData,
                 onClickSignOut = youreDoingWellAuthViewModel::signOut,
             )
+
+            composable(ADD_RECORD_ROUTE) {
+                if(userData == null) {
+                    youreDoingWellAuthViewModel.signOut()
+                } else {
+                    Column {
+                        Text(userData.toString())
+                        Text("setting_screen")
+                    }
+                }
+            }
+
+            composable(SETTING_ROUTE) {
+                if(userData == null) {
+                    youreDoingWellAuthViewModel.signOut()
+                } else {
+                    Column {
+                        Text(userData.toString())
+                        Text("setting_screen")
+                    }
+                }
+            }
         }
     }
 
