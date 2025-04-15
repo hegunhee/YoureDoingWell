@@ -118,7 +118,7 @@ fun SignInRootScreen(
 }
 
 @Composable
-fun SignInScreen(
+internal fun SignInScreen(
     paddingValues: PaddingValues,
     emailText: String,
     passwordText: String,
