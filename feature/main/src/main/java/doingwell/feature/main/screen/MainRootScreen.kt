@@ -7,14 +7,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.hegunhee.model.user.UserData
 import com.hegunhee.youredoingwell.ui.theme.Typography
 import doingwell.core.ui.text.TitleText
 
 @Composable
 fun MainScreenRoot(
-    viewModel : MainViewModel = hiltViewModel(),
     userData: UserData?,
     popSignInScreen: () -> Unit,
     popDailyScreen: () -> Unit,
@@ -32,7 +30,7 @@ fun MainScreenRoot(
 }
 
 @Composable
-fun MainScreen(
+internal fun MainScreen(
     userData : UserData?,
     modifier : Modifier = Modifier,
 ) {
