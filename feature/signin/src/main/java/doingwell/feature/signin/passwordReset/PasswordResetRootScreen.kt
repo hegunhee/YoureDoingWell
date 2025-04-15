@@ -42,7 +42,7 @@ fun PasswordResetRootScreen(
 }
 
 @Composable
-fun PasswordResetScreen(
+internal fun PasswordResetScreen(
     paddingValues: PaddingValues,
     email: String,
     isEmailSend: Boolean,
