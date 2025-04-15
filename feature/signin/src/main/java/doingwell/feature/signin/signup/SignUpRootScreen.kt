@@ -56,7 +56,7 @@ fun SignUpRootScreen(
 }
 
 @Composable
-fun SignUpScreen(
+internal fun SignUpScreen(
     paddingValues: PaddingValues,
     emailText: String,
     passwordText: String,
