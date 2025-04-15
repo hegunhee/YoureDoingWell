@@ -32,7 +32,7 @@ fun MainScreenRoot(
 }
 
 @Composable
-fun MainScreen(
+internal fun MainScreen(
     userData : UserData?,
     modifier : Modifier = Modifier,
 ) {
