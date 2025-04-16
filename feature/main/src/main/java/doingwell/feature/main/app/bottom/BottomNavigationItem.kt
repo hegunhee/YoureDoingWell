@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.hegunhee.daily.navigation.DAILY_ROUTE
+import doingwell.feature.addRecord.navigation.ADD_RECORD_ROUTE
 import doingwell.feature.main.R
 
 sealed class BottomNavigationItem(
@@ -22,5 +23,4 @@ sealed class BottomNavigationItem(
     }
 }
 
-const val ADD_RECORD_ROUTE = "ADD_RECORD"
 const val SETTING_ROUTE = "SETTING"

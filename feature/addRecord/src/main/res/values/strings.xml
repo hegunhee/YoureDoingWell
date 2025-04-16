@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="new_record">새 기록</string>
+    <string name="photo">사진</string>
+    <string name="enter_title">제목을 입력해주세요</string>
+    <string name="enter_description">설명을 작성해주세요</string>
+    <string name="save_record">추가하기</string>
+</resources>
