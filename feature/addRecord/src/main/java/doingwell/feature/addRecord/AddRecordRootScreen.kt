@@ -4,7 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -58,12 +62,32 @@ internal fun AddRecordScreen(
                 )
                 Spacer(modifier = modifier.padding(horizontal = 5.dp))
             }
-
         }
-        Text(
-            userData.toString(),
-            modifier = modifier.padding(paddingValues)
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = { Text(stringResource(R.string.enter_title)) },
+            modifier = modifier
+                .padding(vertical = 5.dp)
+                .fillMaxWidth()
         )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = { Text(stringResource(R.string.enter_description)) },
+            modifier = modifier
+                .padding(vertical = 5.dp)
+                .fillMaxWidth()
+        )
+
+        Spacer(modifier = modifier.weight(1f))
+        Button(
+            {},
+            modifier = modifier.fillMaxWidth()
+        ) {
+            Text(stringResource(R.string.save_record))
+        }
     }
 }
 
