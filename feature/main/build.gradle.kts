@@ -9,10 +9,12 @@ android {
 
 dependencies {
 
-    add("implementation", project(":feature:signin"))
+    implementation(project(":feature:signin"))
     implementation(project(":feature:daily"))
+    implementation(project(":feature:addRecord"))
 
-    add("implementation", platform(libs.firebase.bom))
-    add("implementation", libs.firebase.authenticate)
-    add("implementation", libs.gms.play.services.auth)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.authenticate)
+    implementation(libs.gms.play.services.auth)
+
 }
