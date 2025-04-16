@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.sharp.Add
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +37,7 @@ fun SmallPhoto(
             .clip(RoundedCornerShape(5))
             .background(Color.Gray)
             .clickable {
-                if(url == null) {
+                if (url == null) {
                     onClickEmptyPhoto()
                 }
             }
@@ -47,6 +49,17 @@ fun SmallPhoto(
                 tint = Color.White,
                 modifier = modifier.align(Alignment.Center)
             )
+        } else {
+            IconButton(
+                onClick = { onClickDeletePhoto(url)},
+                modifier = modifier.align(Alignment.TopEnd)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = stringResource(R.string.delete_photo),
+                    tint = Color.Red
+                )
+            }
         }
 
     }
@@ -57,6 +70,18 @@ fun SmallPhoto(
 private fun EmptySmallPhoto() {
     SmallPhoto(
         url = null,
+        onClickEmptyPhoto = {},
+        onClickDeletePhoto = {},
+        modifier = Modifier,
+    )
+}
+
+@Preview
+@Composable
+private fun FillSmallPhoto() {
+    val url = ""
+    SmallPhoto(
+        url = url,
         onClickEmptyPhoto = {},
         onClickDeletePhoto = {},
         modifier = Modifier,
