@@ -1,8 +1,10 @@
 package doingwell.feature.addRecord
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.hegunhee.model.user.UserData
 
@@ -11,7 +13,7 @@ fun AddRecordRootScreen(
     paddingValues: PaddingValues,
     userData: UserData?
 ) {
-    if(userData != null) {
+    if (userData != null) {
         AddRecordScreen(
             paddingValues = paddingValues,
             userData = userData,
@@ -23,8 +25,12 @@ fun AddRecordRootScreen(
 internal fun AddRecordScreen(
     paddingValues: PaddingValues,
     userData: UserData,
+    modifier: Modifier = Modifier,
 ) {
-    Text(userData.toString())
+    Text(
+        userData.toString(),
+        modifier = modifier.padding(paddingValues)
+    )
 }
 
 @Preview
