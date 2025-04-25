@@ -1,6 +1,6 @@
 package com.hegunhee.model.user
 
-data class TimeInfo(
+data class DateTimeInfo(
     val year: Int,
     val month: Int,
     val dayOfMonth: Int,
@@ -8,7 +8,7 @@ data class TimeInfo(
     val minute: Int,
 ) {
     fun getDateText(): String {
-        return "${2024}. ${month}. $dayOfMonth"
+        return "${year}. ${month}. $dayOfMonth"
     }
 
     fun getTimeText(): String {
