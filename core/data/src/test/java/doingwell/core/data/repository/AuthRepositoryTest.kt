@@ -1,7 +1,7 @@
 package doingwell.core.data.repository
 
 import com.hegunhee.model.user.UserData
-import doingwell.core.data.datasource.remote.DefaultRemoteDataSource
+import doingwell.core.data.datasource.remote.DefaultUserRemoteDataSource
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
@@ -20,23 +20,23 @@ class AuthRepositoryTest {
     private lateinit var sut: DefaultAuthRepository
 
     @Mock
-    private lateinit var remoteDataSource: DefaultRemoteDataSource
+    private lateinit var userRemoteDataSource: DefaultUserRemoteDataSource
 
     @Test
     fun givenUserData_whenInsertUserData_thenReturnsUid() {
         runBlocking {
             // Given
             val userData = createUserData("TEST_UID", email = "TEST_EMAIL")
-            whenever(remoteDataSource.findUser(userData.uid)).thenReturn(null)
-            whenever(remoteDataSource.insertUserData(userData)).thenReturn(userData.uid)
+            whenever(userRemoteDataSource.findUser(userData.uid)).thenReturn(null)
+            whenever(userRemoteDataSource.insertUserData(userData)).thenReturn(userData.uid)
 
             // When
             val uid = sut.insertUserData(userData).getOrThrow()
 
             // Then
             assertThat(uid).isEqualTo(userData.uid)
-            verify(remoteDataSource).findUser(userData.uid)
-            verify(remoteDataSource).insertUserData(userData)
+            verify(userRemoteDataSource).findUser(userData.uid)
+            verify(userRemoteDataSource).insertUserData(userData)
         }
     }
 
@@ -45,14 +45,14 @@ class AuthRepositoryTest {
         runBlocking {
             // Given
             val existUserData = createUserData("EXIST_UID", email = "EXIST_EMAIL")
-            whenever(remoteDataSource.findUser(existUserData.uid)).thenReturn(existUserData)
+            whenever(userRemoteDataSource.findUser(existUserData.uid)).thenReturn(existUserData)
 
             // When
             val uid = sut.insertUserData(existUserData).getOrThrow()
 
             // Then
             assertThat(uid).isEqualTo(existUserData.uid)
-            verify(remoteDataSource).findUser(existUserData.uid)
+            verify(userRemoteDataSource).findUser(existUserData.uid)
         }
     }
 
@@ -62,14 +62,14 @@ class AuthRepositoryTest {
             // Given
             val existUid = "Exist_UID"
             val existUserData = createUserData(existUid, email = "EXIST_EMAIL")
-            whenever(remoteDataSource.findUser(existUid)).thenReturn(existUserData)
+            whenever(userRemoteDataSource.findUser(existUid)).thenReturn(existUserData)
 
             // When
             val findUserData = sut.findUser(existUid).getOrThrow()
 
             // Then
             assertThat(findUserData).isEqualTo(existUserData)
-            verify(remoteDataSource).findUser(existUid)
+            verify(userRemoteDataSource).findUser(existUid)
         }
     }
 
@@ -78,7 +78,7 @@ class AuthRepositoryTest {
         runBlocking {
             // Given
             val nonExistUid = "Non_Exist_UID"
-            whenever(remoteDataSource.findUser(nonExistUid)).thenReturn(null)
+            whenever(userRemoteDataSource.findUser(nonExistUid)).thenReturn(null)
 
             // When
             val t = catchThrowable { runBlocking { sut.findUser(nonExistUid).getOrThrow() } }
@@ -88,7 +88,7 @@ class AuthRepositoryTest {
                 .isInstanceOf(NoSuchElementException::class.java)
                 .hasMessage("계정을 찾지 못했습니다.")
 
-            verify(remoteDataSource).findUser(nonExistUid)
+            verify(userRemoteDataSource).findUser(nonExistUid)
 
         }
     }
@@ -98,14 +98,14 @@ class AuthRepositoryTest {
         runBlocking {
             // given
             val uid = "UID"
-            whenever(remoteDataSource.deleteUser(uid)).thenReturn(uid)
+            whenever(userRemoteDataSource.deleteUser(uid)).thenReturn(uid)
 
             // when
             val deletedUid = sut.deleteUser(uid).getOrThrow()
 
             // then
             assertThat(deletedUid).isEqualTo(uid)
-            verify(remoteDataSource).deleteUser(uid)
+            verify(userRemoteDataSource).deleteUser(uid)
         }
     }
 

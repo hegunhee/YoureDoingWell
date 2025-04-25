@@ -7,9 +7,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DefaultRemoteDataSource @Inject constructor(
-    val database: DatabaseReference
-) : RemoteDataSource {
+class DefaultUserRemoteDataSource @Inject constructor(
+    private val database: DatabaseReference
+) : UserRemoteDataSource {
 
     override suspend fun insertUserData(userData: UserData): String {
         return try {

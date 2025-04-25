@@ -8,8 +8,8 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.hegunhee.model.user.UserData
-import doingwell.core.data.datasource.remote.DefaultRemoteDataSource
-import doingwell.core.data.datasource.remote.RemoteDataSource
+import doingwell.core.data.datasource.remote.DefaultUserRemoteDataSource
+import doingwell.core.data.datasource.remote.UserRemoteDataSource
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -17,9 +17,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class RemoteDataSourceTest {
+class UserRemoteDataSourceTest {
 
-    private lateinit var sut : RemoteDataSource
+    private lateinit var sut : UserRemoteDataSource
 
     @Before
     fun initContext() {
@@ -32,7 +32,7 @@ class RemoteDataSourceTest {
                 .build()
             FirebaseApp.initializeApp(context, options)
         }
-        sut = DefaultRemoteDataSource(Firebase.database.getReference("TEST"))
+        sut = DefaultUserRemoteDataSource(Firebase.database.getReference("TEST"))
     }
 
     @Test

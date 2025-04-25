@@ -2,7 +2,7 @@ package doingwell.core.data.datasource.remote
 
 import com.hegunhee.model.user.UserData
 
-interface RemoteDataSource {
+interface UserRemoteDataSource {
 
     suspend fun insertUserData(userData: UserData): String
 
