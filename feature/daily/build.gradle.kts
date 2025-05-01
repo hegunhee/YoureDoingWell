@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.hegunhee.daily"
+    namespace = "doingwell.feature.daily"
 }
 
 dependencies {

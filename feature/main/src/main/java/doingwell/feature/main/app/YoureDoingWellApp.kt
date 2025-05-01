@@ -17,7 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.hegunhee.daily.navigation.dailyNavGraph
+import doingwell.feature.daily.navigation.dailyNavGraph
 import com.hegunhee.model.user.UserData
 import doingwell.feature.addRecord.navigation.addRecordNavGraph
 import doingwell.feature.main.app.auth.AuthState

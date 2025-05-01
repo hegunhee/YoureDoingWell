@@ -1,10 +1,10 @@
-package com.hegunhee.daily.navigation
+package doingwell.feature.daily.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.hegunhee.daily.DailyRootScreen
+import doingwell.feature.daily.DailyRootScreen
 import com.hegunhee.model.user.UserData
 
 const val DAILY_ROUTE = "DAILY"
