@@ -1,4 +1,4 @@
-package com.hegunhee.daily
+package doingwell.feature.daily
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
