@@ -6,7 +6,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Transaction
 import com.google.firebase.database.Transaction.Handler
-import com.google.firebase.database.getValue
 import doingwell.core.data.datasource.remote.model.record.DailyRecordResponse
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -18,7 +17,7 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
     private val database: DatabaseReference
 ) : DailyRecordRemoteDataSource {
 
-    override suspend fun insertDailyRecord(dailyRecordResponse: DailyRecordResponse): String {
+    override suspend fun insertDailyRecord(dailyRecordResponse: DailyRecordResponse): Int {
         val ref = database.child(
             getUserDailyPath(
                 dailyRecordResponse.userId,
@@ -34,14 +33,12 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
                         currentData.child("count").value = 0
                     }
 
-                    val newCount = currentCount + 1
-
                     val updatedRecord = dailyRecordResponse.copy(
-                        recordId = newCount
+                        recordId = currentCount
                     )
 
-                    currentData.child("records").child(newCount.toString()).setValue(updatedRecord)
-                    currentData.child("count").setValue(newCount)
+                    currentData.child("records").child(currentCount.toString()).setValue(updatedRecord)
+                    currentData.child("count").setValue(currentCount + 1)
 
                     return Transaction.success(currentData)
                 }
@@ -58,14 +55,14 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
                         if(recordId == null) {
                             continuation.resumeWithException(IllegalStateException("기록이 정상적으로 저장되지 않았습니다."))
                         } else {
-                            continuation.resume(recordId)
+                            continuation.resume(recordId - 1)
                         }
                     }
                 }
             })
         }
 
-        return result.toString()
+        return result
     }
 
     override suspend fun findDailyRecords(
@@ -91,10 +88,10 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
         recordId: Int,
         userId: String,
         dateStamp: String,
-    ): String {
+    ): Int {
         database.child(getUserDailyPath(userId, dateStamp)).child("records")
             .child(recordId.toString()).removeValue().await()
-        return recordId.toString()
+        return recordId
     }
 
     private fun getUserDailyPath(userId: String, dataStamp: String): String {

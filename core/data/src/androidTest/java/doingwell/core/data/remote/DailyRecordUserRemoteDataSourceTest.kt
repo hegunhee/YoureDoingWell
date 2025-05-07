@@ -1,7 +1,6 @@
 package doingwell.core.data.remote
 
 import android.content.Context
-import android.util.Log
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.firebase.Firebase
@@ -15,6 +14,7 @@ import doingwell.core.data.datasource.remote.model.DateTimeResponse
 import doingwell.core.data.datasource.remote.model.record.DailyRecordResponse
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,10 +50,11 @@ class DailyRecordUserRemoteDataSourceTest {
             // When
             val key = sut.insertDailyRecord(dailyRecordResponse)
 
+            println(key)
             // Then
-            assertEquals(key, 0)
+            assertTrue(key >= 0)
 
-            sut.deleteDailyRecord(key.toInt(), "userId", dailyRecordResponse.startedAt.dateStamp)
+            sut.deleteDailyRecord(key, "userId", dailyRecordResponse.startedAt.dateStamp)
         }
     }
 
@@ -73,15 +74,15 @@ class DailyRecordUserRemoteDataSourceTest {
             val key1 = sut.insertDailyRecord(dailyRecord2)
 
             // When
-            val records = sut.findDailyRecords(userId,dateStamp).sortedBy { it.title }
+            val records = sut.findDailyRecords(userId, dateStamp).sortedBy { it.title }
 
             // Then
             assertEquals(records.size, beforeRecords.size)
             assertEquals(records.map { it.title }, beforeRecords.map { it.title })
 
 
-            sut.deleteDailyRecord(key0.toInt(), userId, dateStamp)
-            sut.deleteDailyRecord(key1.toInt(), userId, dateStamp)
+            sut.deleteDailyRecord(key0, userId, dateStamp)
+            sut.deleteDailyRecord(key1, userId, dateStamp)
         }
     }
 

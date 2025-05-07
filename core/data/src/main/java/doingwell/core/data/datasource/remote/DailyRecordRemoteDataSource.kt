@@ -4,7 +4,7 @@ import doingwell.core.data.datasource.remote.model.record.DailyRecordResponse
 
 interface DailyRecordRemoteDataSource {
 
-    suspend fun insertDailyRecord(dailyRecordResponse: DailyRecordResponse): String
+    suspend fun insertDailyRecord(dailyRecordResponse: DailyRecordResponse): Int
 
     suspend fun findDailyRecords(
         userId: String,
@@ -15,5 +15,5 @@ interface DailyRecordRemoteDataSource {
         recordId: Int,
         userId: String,
         dateStamp: String,
-    ): String
+    ): Int
 }
