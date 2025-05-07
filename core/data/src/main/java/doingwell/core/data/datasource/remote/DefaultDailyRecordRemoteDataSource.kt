@@ -94,6 +94,11 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
         return recordId
     }
 
+    override suspend fun dailyRecordsSize(userId: String, dateStamp: String): Int {
+        val snapshot = database.child(getUserDailyPath(userId, dateStamp)).child("records").get().await()
+        return snapshot.children.count()
+    }
+
     private fun getUserDailyPath(userId: String, dataStamp: String): String {
         return "record/daily/$userId/$dataStamp"
     }

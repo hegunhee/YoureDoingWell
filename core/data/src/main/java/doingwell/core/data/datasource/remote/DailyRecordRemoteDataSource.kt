@@ -16,4 +16,9 @@ interface DailyRecordRemoteDataSource {
         userId: String,
         dateStamp: String,
     ): Int
+
+    suspend fun dailyRecordsSize(
+        userId: String,
+        dateStamp: String,
+    ): Int
 }

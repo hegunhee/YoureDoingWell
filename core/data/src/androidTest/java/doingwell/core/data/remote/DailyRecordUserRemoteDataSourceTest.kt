@@ -86,6 +86,19 @@ class DailyRecordUserRemoteDataSourceTest {
         }
     }
 
+    @Test
+    fun givenZeroRecords_whenGetDailyRecordsSize_thenWorksFime() {
+        runBlocking {
+            // Given
+
+            // When
+            val size = sut.dailyRecordsSize("userId", "20250507")
+
+            // Then
+            assertEquals(size, 0)
+        }
+    }
+
     private fun createDailyRecordResponse(
         userId: String,
         title: String
