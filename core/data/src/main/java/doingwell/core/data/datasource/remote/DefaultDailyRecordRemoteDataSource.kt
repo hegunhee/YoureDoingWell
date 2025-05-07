@@ -62,17 +62,19 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
         return dailyRecordResponse.key
     }
 
-    override suspend fun findDailyRecords(userId: String): List<DailyRecordResponse> {
-        val ref = database.child("record/daily/$userId").ref
+    override suspend fun findDailyRecords(
+        userId: String,
+        dateStamp: String,
+    ): List<DailyRecordResponse> {
+        val ref = database.child(getUserDailyPath(userId, dateStamp)).child("records").ref
+
         val snapshot = ref.get().await()
 
         val result = mutableListOf<DailyRecordResponse>()
-        for (dateNode in snapshot.children) {
-            for (recordNode in dateNode.children) {
-                val record = recordNode.getValue(DailyRecordResponse::class.java)
-                if (record != null) {
-                    result.add(record)
-                }
+        for (recordNode in snapshot.children) {
+            val record = recordNode.getValue(DailyRecordResponse::class.java)
+            if (record != null) {
+                result.add(record)
             }
         }
 

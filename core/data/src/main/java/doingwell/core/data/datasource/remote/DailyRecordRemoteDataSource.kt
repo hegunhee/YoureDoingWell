@@ -6,7 +6,10 @@ interface DailyRecordRemoteDataSource {
 
     suspend fun insertDailyRecord(dailyRecordResponse: DailyRecordResponse): String
 
-    suspend fun findDailyRecords(userId: String): List<DailyRecordResponse>
+    suspend fun findDailyRecords(
+        userId: String,
+        dateStamp: String,
+    ): List<DailyRecordResponse>
 
     suspend fun deleteDailyRecord(
         userId: String,
