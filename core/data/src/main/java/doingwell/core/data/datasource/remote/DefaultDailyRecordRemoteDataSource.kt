@@ -96,7 +96,14 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
 
     override suspend fun dailyRecordsSize(userId: String, dateStamp: String): Int {
         val snapshot = database.child(getUserDailyPath(userId, dateStamp)).child("records").get().await()
-        return snapshot.children.count()
+        return snapshot.childrenCount.toInt()
+    }
+
+    override suspend fun deleteDailyRecords(userId: String, dateStamp: String): Int {
+        val beforeCount = database.child(getUserDailyPath(userId, dateStamp)).child("records").get().await().childrenCount
+        database.child(getUserDailyPath(userId, dateStamp)).child("records").removeValue().await()
+        val afterCount = database.child(getUserDailyPath(userId, dateStamp)).child("records").get().await().childrenCount
+        return (beforeCount - afterCount).toInt()
     }
 
     private fun getUserDailyPath(userId: String, dataStamp: String): String {

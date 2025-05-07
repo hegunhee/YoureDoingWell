@@ -87,7 +87,7 @@ class DailyRecordUserRemoteDataSourceTest {
     }
 
     @Test
-    fun givenZeroRecords_whenGetDailyRecordsSize_thenWorksFime() {
+    fun given_whenGetDailyRecordsSize_thenWorksFine() {
         runBlocking {
             // Given
 
@@ -96,6 +96,19 @@ class DailyRecordUserRemoteDataSourceTest {
 
             // Then
             assertEquals(size, 0)
+        }
+    }
+
+    @Test
+    fun given_whenDeleteAllRecords_thenWorksFine() {
+        runBlocking {
+            // Given
+
+            // When
+            val deletedCount = sut.deleteDailyRecords("userId", "20250507")
+
+            // Then
+            assertEquals(deletedCount, 0)
         }
     }
 

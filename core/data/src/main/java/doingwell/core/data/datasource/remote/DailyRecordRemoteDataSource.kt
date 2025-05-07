@@ -21,4 +21,9 @@ interface DailyRecordRemoteDataSource {
         userId: String,
         dateStamp: String,
     ): Int
+
+    suspend fun deleteDailyRecords(
+        userId: String,
+        dateStamp: String,
+    ): Int
 }
