@@ -4,6 +4,7 @@ import com.hegunhee.model.user.record.DailyRecord
 import doingwell.core.data.datasource.remote.model.DateTimeResponse
 
 data class DailyRecordResponse(
+    val recordId: Int? = null,
     val userId: String = "",
     val title: String = "",
     val description: String? = null,
@@ -12,10 +13,9 @@ data class DailyRecordResponse(
     val endedAt: DateTimeResponse = DateTimeResponse(),
 ) {
 
-    val key: String = "${title}_${startedAt.dateStamp}_${startedAt.timeStamp}"
-
     fun toModel() : DailyRecord {
         return DailyRecord(
+            recordId,
             userId,
             title,
             description,
@@ -30,6 +30,7 @@ data class DailyRecordResponse(
             dailyRecord: DailyRecord
         ): DailyRecordResponse = with(dailyRecord) {
             return DailyRecordResponse(
+                recordId,
                 userId,
                 title,
                 description,
