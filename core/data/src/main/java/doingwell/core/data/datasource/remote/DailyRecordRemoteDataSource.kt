@@ -12,9 +12,8 @@ interface DailyRecordRemoteDataSource {
     ): List<DailyRecordResponse>
 
     suspend fun deleteDailyRecord(
+        recordId: Int,
         userId: String,
-        title: String,
         dateStamp: String,
-        timeStamp: String
     ): String
 }

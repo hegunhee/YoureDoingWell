@@ -51,6 +51,9 @@ class DailyRecordUserRemoteDataSourceTest {
             val key = sut.insertDailyRecord(dailyRecordResponse)
 
             // Then
+            assertEquals(key, 0)
+
+            sut.deleteDailyRecord(key.toInt(), "userId", dailyRecordResponse.startedAt.dateStamp)
         }
     }
 
@@ -66,27 +69,19 @@ class DailyRecordUserRemoteDataSourceTest {
 
             val beforeRecords = listOf(dailyRecord1, dailyRecord2)
 
-            sut.insertDailyRecord(dailyRecord1)
-            sut.insertDailyRecord(dailyRecord2)
+            val key0 = sut.insertDailyRecord(dailyRecord1)
+            val key1 = sut.insertDailyRecord(dailyRecord2)
 
             // When
             val records = sut.findDailyRecords(userId,dateStamp).sortedBy { it.title }
 
-            Log.d("TEST!!!", records.toString())
-            println("records $records")
-
             // Then
-//            assertEquals(records.size, beforeRecords.size)
-//            assertEquals(records, beforeRecords)
-//
-//            records.forEach { record ->
-//                sut.deleteDailyRecord(
-//                    record.userId,
-//                    record.title,
-//                    record.startedAt.dateStamp,
-//                    record.startedAt.timeStamp
-//                )
-//            }
+            assertEquals(records.size, beforeRecords.size)
+            assertEquals(records.map { it.title }, beforeRecords.map { it.title })
+
+
+            sut.deleteDailyRecord(key0.toInt(), userId, dateStamp)
+            sut.deleteDailyRecord(key1.toInt(), userId, dateStamp)
         }
     }
 

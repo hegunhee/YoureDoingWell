@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Transaction
 import com.google.firebase.database.Transaction.Handler
+import com.google.firebase.database.getValue
 import doingwell.core.data.datasource.remote.model.record.DailyRecordResponse
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -25,7 +26,7 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
             )
         )
 
-        suspendCancellableCoroutine { continuation ->
+        val result = suspendCancellableCoroutine<Int> { continuation ->
             ref.runTransaction(object : Handler {
                 override fun doTransaction(currentData: MutableData): Transaction.Result {
                     val currentCount = currentData.child("count").getValue(Int::class.java) ?: 0
@@ -53,13 +54,18 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
                     if (error != null) {
                         continuation.resumeWithException(error.toException())
                     } else {
-                        continuation.resume(Unit)
+                        val recordId = currentData?.child("count")?.getValue(Int::class.java)
+                        if(recordId == null) {
+                            continuation.resumeWithException(IllegalStateException("기록이 정상적으로 저장되지 않았습니다."))
+                        } else {
+                            continuation.resume(recordId)
+                        }
                     }
                 }
             })
         }
 
-        return dailyRecordResponse.key
+        return result.toString()
     }
 
     override suspend fun findDailyRecords(
@@ -82,28 +88,17 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
     }
 
     override suspend fun deleteDailyRecord(
+        recordId: Int,
         userId: String,
-        title: String,
         dateStamp: String,
-        timeStamp: String
     ): String {
-        val key = "${title}_${dateStamp}_${timeStamp}"
-        database.child(
-            getDailyPath(
-                userId,
-                dateStamp,
-                key
-            )
-        ).removeValue().await()
-        return key
+        database.child(getUserDailyPath(userId, dateStamp)).child("records")
+            .child(recordId.toString()).removeValue().await()
+        return recordId.toString()
     }
 
     private fun getUserDailyPath(userId: String, dataStamp: String): String {
         return "record/daily/$userId/$dataStamp"
-    }
-
-    private fun getDailyPath(userId: String, dateStamp: String, key: String): String {
-        return "record/daily/$userId/$dateStamp/$key"
     }
 
 }
