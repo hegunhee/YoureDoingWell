@@ -13,8 +13,6 @@ data class DailyRecordResponse(
     val endedAt: DateTimeResponse = DateTimeResponse(),
 ) {
 
-    val key: String = "${title}_${startedAt.dateStamp}_${startedAt.timeStamp}"
-
     fun toModel() : DailyRecord {
         return DailyRecord(
             recordId,
