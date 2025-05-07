@@ -1,25 +1,63 @@
 package doingwell.core.data.datasource.remote
 
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
+import com.google.firebase.database.Transaction.Handler
 import doingwell.core.data.datasource.remote.model.record.DailyRecordResponse
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 class DefaultDailyRecordRemoteDataSource @Inject constructor(
     private val database: DatabaseReference
 ) : DailyRecordRemoteDataSource {
 
     override suspend fun insertDailyRecord(dailyRecordResponse: DailyRecordResponse): String {
-        database
-            .child(
-                getDailyPath(
-                    dailyRecordResponse.userId,
-                    dailyRecordResponse.startedAt.dateStamp,
-                    dailyRecordResponse.key
-                )
+        val ref = database.child(
+            getUserDailyPath(
+                dailyRecordResponse.userId,
+                dailyRecordResponse.startedAt.dateStamp
             )
-            .setValue(dailyRecordResponse)
-            .await()
+        )
+
+        suspendCancellableCoroutine { continuation ->
+            ref.runTransaction(object : Handler {
+                override fun doTransaction(currentData: MutableData): Transaction.Result {
+                    val currentCount = currentData.child("count").getValue(Int::class.java) ?: 0
+                    if (currentCount == 0) {
+                        currentData.child("count").value = 0
+                    }
+
+                    val newCount = currentCount + 1
+
+                    val updatedRecord = dailyRecordResponse.copy(
+                        recordId = newCount
+                    )
+
+                    currentData.child("records").child(newCount.toString()).setValue(updatedRecord)
+                    currentData.child("count").setValue(newCount)
+
+                    return Transaction.success(currentData)
+                }
+
+                override fun onComplete(
+                    error: DatabaseError?,
+                    committed: Boolean,
+                    currentData: DataSnapshot?
+                ) {
+                    if (error != null) {
+                        continuation.resumeWithException(error.toException())
+                    } else {
+                        continuation.resume(Unit)
+                    }
+                }
+            })
+        }
 
         return dailyRecordResponse.key
     }
@@ -56,6 +94,10 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
             )
         ).removeValue().await()
         return key
+    }
+
+    private fun getUserDailyPath(userId: String, dataStamp: String): String {
+        return "record/daily/$userId/$dataStamp"
     }
 
     private fun getDailyPath(userId: String, dateStamp: String, key: String): String {
