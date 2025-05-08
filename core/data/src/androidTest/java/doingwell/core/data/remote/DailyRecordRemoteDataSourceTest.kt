@@ -22,7 +22,7 @@ import org.junit.runner.RunWith
 import java.time.LocalDateTime
 
 @RunWith(AndroidJUnit4::class)
-class DailyRecordUserRemoteDataSourceTest {
+class DailyRecordRemoteDataSourceTest {
 
     private lateinit var sut: DailyRecordRemoteDataSource
 
