@@ -13,30 +13,18 @@ class DefaultUserRemoteDataSource @Inject constructor(
 ) : UserRemoteDataSource {
 
     override suspend fun insertUserData(userData: UserData): String {
-        return try {
-            database.child(userData.uid).setValue(userData).await()
-            userData.uid
-        } catch (e: Exception) {
-            throw e
-        }
+        database.child(userData.uid).setValue(userData).await()
+        return userData.uid
     }
 
     override suspend fun findUser(uid: String): UserData? {
-        return try {
-            val snapshot = database.child(uid).get().await()
-            snapshot.getValue(UserData::class.java)
-        } catch (e: Exception) {
-            throw e
-        }
+        val snapshot = database.child(uid).get().await()
+        return snapshot.getValue(UserData::class.java)
     }
 
     override suspend fun deleteUser(uid: String): String {
-        return try {
-            database.child(uid).removeValue().await()
-            uid
-        } catch (e: Exception) {
-            throw e
-        }
+        database.child(uid).removeValue().await()
+        return uid
     }
 
 }
