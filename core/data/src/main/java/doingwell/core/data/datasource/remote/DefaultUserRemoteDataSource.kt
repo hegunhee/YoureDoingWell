@@ -2,18 +2,19 @@ package doingwell.core.data.datasource.remote
 
 import com.google.firebase.database.DatabaseReference
 import com.hegunhee.model.user.UserData
+import doingwell.core.data.di.qualifier.UserDatabase
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class DefaultUserRemoteDataSource @Inject constructor(
-    private val database: DatabaseReference
+    @UserDatabase private val database: DatabaseReference
 ) : UserRemoteDataSource {
 
     override suspend fun insertUserData(userData: UserData): String {
         return try {
-            database.child("User").child(userData.uid).setValue(userData).await()
+            database.child(userData.uid).setValue(userData).await()
             userData.uid
         } catch (e: Exception) {
             throw e
@@ -22,7 +23,7 @@ class DefaultUserRemoteDataSource @Inject constructor(
 
     override suspend fun findUser(uid: String): UserData? {
         return try {
-            val snapshot = database.child("User").child(uid).get().await()
+            val snapshot = database.child(uid).get().await()
             snapshot.getValue(UserData::class.java)
         } catch (e: Exception) {
             throw e
@@ -31,7 +32,7 @@ class DefaultUserRemoteDataSource @Inject constructor(
 
     override suspend fun deleteUser(uid: String): String {
         return try {
-            database.child("User").child(uid).removeValue().await()
+            database.child(uid).removeValue().await()
             uid
         } catch (e: Exception) {
             throw e
