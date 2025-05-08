@@ -7,6 +7,7 @@ import com.google.firebase.database.MutableData
 import com.google.firebase.database.Transaction
 import com.google.firebase.database.Transaction.Handler
 import doingwell.core.data.datasource.remote.model.record.DailyRecordResponse
+import doingwell.core.data.di.qualifier.DailyRecordDatabase
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -14,7 +15,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 class DefaultDailyRecordRemoteDataSource @Inject constructor(
-    private val database: DatabaseReference
+    @DailyRecordDatabase private val database: DatabaseReference
 ) : DailyRecordRemoteDataSource {
 
     override suspend fun insertDailyRecord(dailyRecordResponse: DailyRecordResponse): Int {
@@ -107,7 +108,7 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
     }
 
     private fun getUserDailyPath(userId: String, dataStamp: String): String {
-        return "record/daily/$userId/$dataStamp"
+        return "$userId/$dataStamp"
     }
 
 }

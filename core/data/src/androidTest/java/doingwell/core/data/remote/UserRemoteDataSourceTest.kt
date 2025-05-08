@@ -32,7 +32,7 @@ class UserRemoteDataSourceTest {
                 .build()
             FirebaseApp.initializeApp(context, options)
         }
-        sut = DefaultUserRemoteDataSource(Firebase.database.getReference("TEST"))
+        sut = DefaultUserRemoteDataSource(Firebase.database.getReference("TEST").child("User"))
     }
 
     @Test
