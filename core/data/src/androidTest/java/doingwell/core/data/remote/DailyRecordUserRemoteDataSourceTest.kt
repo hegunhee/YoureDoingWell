@@ -13,6 +13,7 @@ import doingwell.core.data.datasource.remote.DefaultDailyRecordRemoteDataSource
 import doingwell.core.data.datasource.remote.model.DateTimeResponse
 import doingwell.core.data.datasource.remote.model.record.DailyRecordResponse
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -38,7 +39,19 @@ class DailyRecordUserRemoteDataSourceTest {
                 .build()
             FirebaseApp.initializeApp(context, options)
         }
-        sut = DefaultDailyRecordRemoteDataSource(Firebase.database.getReference("TEST"))
+        sut = DefaultDailyRecordRemoteDataSource(
+            Firebase.database.getReference("TEST").child("record").child("daily")
+        )
+    }
+
+    @After
+    fun tearDown() {
+        runBlocking {
+            val dateStamp = todayDateStamp()
+            if (sut.dailyRecordsSize("userId", dateStamp) == 0) {
+                sut.deleteDailyRecords("userId", dateStamp)
+            }
+        }
     }
 
     @Test
@@ -58,15 +71,17 @@ class DailyRecordUserRemoteDataSourceTest {
         }
     }
 
+
     @Test
     fun givenDailyRecordResponse_whenGetByUserId_thenWorksFine() {
         runBlocking {
             // Given
             val userId = "userId"
-            val dateStamp = "20250507"
 
             val dailyRecord1 = createDailyRecordResponse(userId, "title1")
             val dailyRecord2 = createDailyRecordResponse(userId, "title2")
+
+            val dateStamp = dailyRecord1.startedAt.dateStamp
 
             val beforeRecords = listOf(dailyRecord1, dailyRecord2)
 
@@ -136,5 +151,13 @@ class DailyRecordUserRemoteDataSourceTest {
                 now.minute
             )
         )
+    }
+
+    private fun todayDateStamp(): String {
+        return listOf(
+            now.year.toString().format(4),
+            now.monthValue.toString().format(2),
+            now.dayOfMonth.toString().format(2),
+        ).joinToString("")
     }
 }
