@@ -5,7 +5,9 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import doingwell.core.data.repository.DefaultAuthRepository
+import doingwell.core.data.repository.DefaultDailyRecordRepository
 import doingwell.core.domain.repository.AuthRepository
+import doingwell.core.domain.repository.DailyRecordRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -17,5 +19,11 @@ abstract class RepositoryModule {
     abstract fun provideAuthRepository(
         defaultAuthRepository: DefaultAuthRepository,
     ) : AuthRepository
+
+    @Singleton
+    @Binds
+    abstract fun provideDailyRecordRepository(
+        defaultDailyRecordRepository: DefaultDailyRecordRepository,
+    ) : DailyRecordRepository
 
 }
