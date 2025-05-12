@@ -41,3 +41,7 @@ data class DailyRecordResponse(
         }
     }
 }
+
+fun List<DailyRecordResponse>.toModel() : List<DailyRecord> {
+    return this.map { it.toModel() }
+}
