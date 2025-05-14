@@ -1,6 +1,8 @@
 package doingwell.feature.addRecord.navigation
 
+import android.net.Uri
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.core.net.toUri
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.hegunhee.model.user.UserData
@@ -11,12 +13,16 @@ const val ADD_RECORD_ROUTE = "ADD_RECORD"
 fun NavGraphBuilder.addRecordNavGraph(
     paddingValues: PaddingValues,
     userData: UserData?,
-    onClickSignOut : () -> Unit,
+    onClickSignOut: () -> Unit,
+    onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
+    getAddedPhoto: () -> List<Uri>?,
 ) {
     composable(ADD_RECORD_ROUTE) {
         AddRecordRootScreen(
             paddingValues = paddingValues,
             userData = userData,
+            onClickAddPhoto = onClickAddPhoto,
+            getAddedPhoto = getAddedPhoto,
         )
     }
 }

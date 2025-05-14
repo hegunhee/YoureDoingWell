@@ -25,7 +25,7 @@ import doingwell.core.ui.R
 @Composable
 fun AddSmallPhoto(
     photoCount: Int,
-    onClickAddPhoto: () -> Unit,
+    onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
     onClickOverPhotoClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -36,7 +36,7 @@ fun AddSmallPhoto(
             .background(Color.Gray)
             .clickable {
                 if (photoCount <= 4) {
-                    onClickAddPhoto()
+                    onClickAddPhoto(4, 4 - photoCount)
                 } else {
                     onClickOverPhotoClick()
                 }
@@ -60,7 +60,7 @@ fun AddSmallPhoto(
 private fun AddSmallPhotoPreview() {
     AddSmallPhoto(
         photoCount = 4,
-        onClickAddPhoto = {},
+        onClickAddPhoto = {_, _ ->},
         onClickOverPhotoClick = {},
     )
 }
