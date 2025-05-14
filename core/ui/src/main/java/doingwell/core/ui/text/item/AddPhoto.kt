@@ -19,14 +19,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.hegunhee.youredoingwell.ui.theme.Orange
 import doingwell.core.ui.R
 
 @Composable
 fun AddSmallPhoto(
     photoCount: Int,
-    onClickAddPhoto: () -> Unit,
+    onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
     onClickOverPhotoClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -35,10 +34,9 @@ fun AddSmallPhoto(
             .size(dimensionResource(id = R.dimen.smallPhotoSize))
             .clip(RoundedCornerShape(5))
             .background(Color.Gray)
-            .border(1.dp, Color.White, RoundedCornerShape(5))
             .clickable {
                 if (photoCount <= 4) {
-                    onClickAddPhoto()
+                    onClickAddPhoto(4, 4 - photoCount)
                 } else {
                     onClickOverPhotoClick()
                 }
@@ -62,7 +60,7 @@ fun AddSmallPhoto(
 private fun AddSmallPhotoPreview() {
     AddSmallPhoto(
         photoCount = 4,
-        onClickAddPhoto = {},
+        onClickAddPhoto = {_, _ ->},
         onClickOverPhotoClick = {},
     )
 }

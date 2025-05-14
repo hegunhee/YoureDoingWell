@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import doingwell.feature.daily.navigation.dailyNavGraph
 import com.hegunhee.model.user.UserData
 import doingwell.feature.addRecord.navigation.addRecordNavGraph
+import doingwell.feature.addphoto.navigation.addPhotoNavGraph
 import doingwell.feature.main.app.auth.AuthState
 import doingwell.feature.main.app.auth.YoureDoingWellAuthViewModel
 import doingwell.feature.main.app.bottom.MainBottomNavigation
@@ -73,6 +74,14 @@ fun YoureDoingWellApp(
                 paddingValues = paddingValues,
                 userData = userData,
                 onClickSignOut = youreDoingWellAuthViewModel::signOut,
+                onClickAddPhoto = youreDoingWellAppState::navigateAddPhoto,
+                getAddedPhoto = youreDoingWellAppState::getPhotoCurrentStackEntry,
+            )
+
+            addPhotoNavGraph(
+                paddingValues = paddingValues,
+                onClickBackStack = youreDoingWellAppState::popBackStack,
+                onClickAddPhotos = youreDoingWellAppState::setPhotoBackStackEntry,
             )
 
             composable(SETTING_ROUTE) {

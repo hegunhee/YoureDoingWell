@@ -1,5 +1,6 @@
 package doingwell.feature.addRecord
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,16 +17,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hegunhee.model.user.UserData
-import doingwell.core.ui.text.item.SmallPhoto
+import doingwell.core.ui.text.item.AddSmallPhoto
 
 @Composable
 fun AddRecordRootScreen(
     paddingValues: PaddingValues,
-    userData: UserData?
+    userData: UserData?,
+    onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
+    getAddedPhoto: () -> List<Uri>?,
 ) {
     if (userData != null) {
         AddRecordScreen(
             paddingValues = paddingValues,
+            onClickAddPhoto = onClickAddPhoto,
             userData = userData,
         )
     }
@@ -35,6 +39,7 @@ fun AddRecordRootScreen(
 internal fun AddRecordScreen(
     paddingValues: PaddingValues,
     userData: UserData,
+    onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -53,14 +58,12 @@ internal fun AddRecordScreen(
         Row(
             modifier = modifier,
         ) {
-            (0..3).forEach { _ ->
-                SmallPhoto(
-                    url = "",
-                    onClickPhoto = {},
-                    onClickDeletePhoto = {},
-                )
-                Spacer(modifier = modifier.padding(horizontal = 5.dp))
-            }
+            AddSmallPhoto(
+                photoCount = 0,
+                onClickAddPhoto = onClickAddPhoto,
+                onClickOverPhotoClick = {},
+
+            )
         }
         OutlinedTextField(
             value = "",
@@ -95,6 +98,7 @@ internal fun AddRecordScreen(
 private fun AddRecordScreenPreview() {
     AddRecordScreen(
         paddingValues = PaddingValues(),
-        userData = UserData()
+        userData = UserData(),
+        onClickAddPhoto = { _, _ -> },
     )
 }

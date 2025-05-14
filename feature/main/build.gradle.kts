@@ -12,6 +12,7 @@ dependencies {
     implementation(project(":feature:signin"))
     implementation(project(":feature:daily"))
     implementation(project(":feature:addRecord"))
+    implementation(project(":feature:addPhoto"))
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.authenticate)
