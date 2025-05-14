@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import doingwell.feature.addphoto.AddPhotoRootScreen
 
-const val ADD_PHOTO_ROUTE = "ADD_PHOTO_ROUTE/maxPhotoCount/currentPhotoCount"
+const val ADD_PHOTO_ROUTE = "ADD_PHOTO_ROUTE/{maxPhotoCount}/{currentPhotoCount}"
 
 fun addPhotoRoute(maxPhotoCount: Int, currentPhotoCount: Int): String {
     return "ADD_PHOTO_ROUTE/$maxPhotoCount/$currentPhotoCount"
