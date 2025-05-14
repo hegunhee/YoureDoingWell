@@ -7,6 +7,7 @@ import androidx.core.net.toUri
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import doingwell.feature.addphoto.navigation.navigateAddPhoto
 import doingwell.feature.daily.navigation.navigateDaily
 import doingwell.feature.main.app.bottom.BottomNavigationItem
 import doingwell.feature.main.screen.navigation.navigateToMain
@@ -56,18 +57,22 @@ class YoureDoingWellAppState(
         navController.navigateToMain()
     }
 
+    fun navigateAddPhoto(maxPhotoCount: Int, currentPhotoCount: Int) {
+        navController.navigateAddPhoto(maxPhotoCount, currentPhotoCount)
+    }
+
     fun popBackStack() {
         navController.popBackStack()
     }
 
     fun setPhotoBackStackEntry(photos: ArrayList<Uri>) {
-        navController.currentBackStackEntry
+        navController.previousBackStackEntry
             ?.savedStateHandle
             ?.set(PHOTO_STACK_ENTRY_KEY, photos.map { it.toString() })
     }
 
     fun getPhotoCurrentStackEntry() : List<Uri>? {
-        return navController.previousBackStackEntry
+        return navController.currentBackStackEntry
             ?.savedStateHandle
             ?.get<ArrayList<String>>(PHOTO_STACK_ENTRY_KEY)?.toList()?.map { it.toUri() }
     }
