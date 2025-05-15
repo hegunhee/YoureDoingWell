@@ -2,6 +2,7 @@ package doingwell.core.data.datasource.local
 
 import android.content.Context
 import android.database.Cursor
+import android.net.Uri
 import android.provider.MediaStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import doingwell.core.data.datasource.local.model.AlbumSummaryResponse
@@ -48,7 +49,38 @@ class DefaultPhotoLocalDataSource @Inject constructor(
         }
     }
 
-    override suspend fun getAlbumWithPhotosResponse(albumName: String): AlbumWithPhotosResponse {
-        TODO("Not yet implemented")
+    override suspend fun getAlbumWithPhotosResponse(albumName: String): AlbumWithPhotosResponse = withContext(Dispatchers.IO) {
+        val projections = arrayOf(
+            MediaStore.Images.Media._ID,
+        )
+
+        val selection = "${MediaStore.Images.Media.BUCKET_DISPLAY_NAME} = ?"
+        val selectionArgs = arrayOf(albumName)
+
+        val cursor: Cursor? = context.contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            projections,
+            selection,
+            selectionArgs,
+            null,
+        )
+
+        val result = mutableListOf<Uri>()
+
+        cursor?.use {
+            val idColum = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+
+            while(it.moveToNext()) {
+                val id = it.getLong(idColum)
+                val contentUri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
+                result.add(contentUri)
+            }
+        }
+
+        return@withContext AlbumWithPhotosResponse(
+            albumName = albumName,
+            size = result.size,
+            photos = result.toList(),
+        )
     }
 }
