@@ -68,10 +68,10 @@ class DefaultPhotoLocalDataSource @Inject constructor(
         val result = mutableListOf<Uri>()
 
         cursor?.use {
-            val idColum = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+            val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
 
             while(it.moveToNext()) {
-                val id = it.getLong(idColum)
+                val id = it.getLong(idColumn)
                 val contentUri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
                 result.add(contentUri)
             }
