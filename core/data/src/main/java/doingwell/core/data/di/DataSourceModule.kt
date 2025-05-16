@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import doingwell.core.data.datasource.local.DefaultPhotoLocalDataSource
+import doingwell.core.data.datasource.local.PhotoLocalDataSource
 import doingwell.core.data.datasource.remote.DailyRecordRemoteDataSource
 import doingwell.core.data.datasource.remote.DefaultDailyRecordRemoteDataSource
 import doingwell.core.data.datasource.remote.DefaultUserRemoteDataSource
@@ -25,5 +27,11 @@ abstract class DataSourceModule {
     abstract fun provideDailyRecordRemoteDataSource(
         defaultDailyRecordRemoteDataSource: DefaultDailyRecordRemoteDataSource,
     ): DailyRecordRemoteDataSource
+
+    @Singleton
+    @Binds
+    abstract fun providePhotoLocalDataSource(
+        defaultPhotoLocalDataSource: DefaultPhotoLocalDataSource,
+    ) : PhotoLocalDataSource
 
 }
