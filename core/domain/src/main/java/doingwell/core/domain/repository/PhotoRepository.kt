@@ -7,6 +7,6 @@ interface PhotoRepository {
 
     suspend fun getAlbumSummaries(): Result<List<AlbumSummary>>
 
-    suspend fun getAlbumAndPhotos(albumName: String): Result<AlbumWithPhotos>
+    suspend fun getAlbumWithPhotos(albumName: String): Result<AlbumWithPhotos>
 
 }

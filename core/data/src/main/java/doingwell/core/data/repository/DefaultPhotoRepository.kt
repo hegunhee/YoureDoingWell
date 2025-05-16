@@ -17,7 +17,7 @@ class DefaultPhotoRepository @Inject constructor(
         }
     }
 
-    override suspend fun getAlbumAndPhotos(albumName: String): Result<AlbumWithPhotos> {
+    override suspend fun getAlbumWithPhotos(albumName: String): Result<AlbumWithPhotos> {
         return runCatching {
             photoLocalDataSource.getAlbumWithPhotosResponse(albumName).toModel()
         }
