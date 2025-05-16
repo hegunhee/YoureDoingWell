@@ -1,7 +1,6 @@
-package doingwell.core.ui.text.item
+package doingwell.core.ui.component.photo
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

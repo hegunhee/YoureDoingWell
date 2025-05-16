@@ -30,6 +30,8 @@ hilt-navigation = "1.2.0"
 google-auth = "20.7.0"
 rules = "1.6.1"
 
+coil = "2.5.0"
+
 [libraries]
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -55,6 +57,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material-icons-extensions = { group = "androidx.compose.material", name = "material-icons-extended" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
@@ -69,7 +72,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation" }
-gms-play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "google-auth"}
+gms-play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "google-auth" }
 
 [bundles]
 compose-ui = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling-preview"]

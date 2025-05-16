@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hegunhee.model.user.UserData
-import doingwell.core.ui.text.item.AddSmallPhoto
+import doingwell.core.ui.component.photo.AddSmallPhoto
 
 @Composable
 fun AddRecordRootScreen(

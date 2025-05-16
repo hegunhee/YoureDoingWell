@@ -1,4 +1,4 @@
-package doingwell.core.ui.text.model
+package doingwell.core.ui.model
 
 import android.net.Uri
 
