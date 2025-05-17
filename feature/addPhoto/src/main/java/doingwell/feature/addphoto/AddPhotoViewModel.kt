@@ -66,13 +66,7 @@ class AddPhotoViewModel @Inject constructor(
 
     private val maxSelectableCount: MutableStateFlow<Int> = MutableStateFlow(0)
 
-    val currentSelectedCount: StateFlow<Int> = selectedPhotos.map {
-        it.size
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(500L),
-        initialValue = 0
-    )
+    private val currentSelectedCount: MutableStateFlow<Int> = MutableStateFlow(0)
 
     init {
         viewModelScope.launch {
@@ -89,6 +83,31 @@ class AddPhotoViewModel @Inject constructor(
     fun initMaxSelectableCount(maxSelectCount: Int, currentSelectCount: Int) {
         maxSelectableCount.update {
             maxSelectCount - currentSelectCount
+        }
+    }
+
+    fun selectPhoto(selectedPhoto: SelectablePhoto) {
+        if (selectedPhoto.selectCount == null) {
+            if (maxSelectableCount.value > currentSelectedCount.value) {
+                _selectedPhotos.update { photos ->
+                    photos + selectedPhoto.copy(selectCount = currentSelectedCount.value + 1)
+                }
+                currentSelectedCount.value += 1
+            }
+        } else {
+            _selectedPhotos.update { photos ->
+                val selectedCount = photos.first { it == selectedPhoto }.selectCount ?: throw IllegalStateException("Count가 올바르지 않은 상태")
+                val filteredPhotos = photos.filter { it != selectedPhoto }
+                
+                filteredPhotos.map { photo ->
+                    if ((photo.selectCount ?: 0) > selectedCount) {
+                        photo.copy(selectCount = (photo.selectCount ?: 0) - 1)
+                    } else {
+                        photo
+                    }
+                }
+            }
+            currentSelectedCount.value -= 1
         }
     }
 

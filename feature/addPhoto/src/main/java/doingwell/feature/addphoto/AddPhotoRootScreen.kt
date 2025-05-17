@@ -49,6 +49,7 @@ fun AddPhotoRootScreen(
         albumSummaries = albumSummaries,
         albumWithPhotoState = albumWithPhotoState,
         selectedPhotos = selectedPhotos,
+        onClickPhoto = viewModel::selectPhoto,
         onClickBackStack = onClickBackStack,
         onClickAddPhotos = onClickAddPhotos,
     )
@@ -61,6 +62,7 @@ internal fun AddPhotoScreen(
     albumSummaries: List<AlbumSummary>,
     albumWithPhotoState: AlbumWithPhotoState,
     selectedPhotos: List<SelectablePhoto>,
+    onClickPhoto: (SelectablePhoto) -> Unit,
     onClickBackStack: () -> Unit,
     onClickAddPhotos: (ArrayList<Uri>) -> Unit,
     modifier: Modifier = Modifier,
@@ -85,7 +87,7 @@ internal fun AddPhotoScreen(
         },
     ) { innerPadding ->
         Column(
-            modifier = modifier
+            modifier = modifier.padding(innerPadding)
         ) {
             when (albumWithPhotoState) {
                 AlbumWithPhotoState.Loading -> {
@@ -99,7 +101,7 @@ internal fun AddPhotoScreen(
                         items(albumWithPhotoState.albumWithPhotos.photos) { selectablePhoto ->
                             SelectablePhoto(
                                 selectablePhoto,
-                                onClickPhoto = {},
+                                onClickPhoto = onClickPhoto,
                             )
                         }
                     }
@@ -120,6 +122,7 @@ private fun AddPhotoScreenPreview() {
         albumSummaries = listOf(),
         albumWithPhotoState = AlbumWithPhotoState.Loading,
         selectedPhotos = listOf(),
+        onClickPhoto = {},
         onClickBackStack = {},
         onClickAddPhotos = {},
     )
