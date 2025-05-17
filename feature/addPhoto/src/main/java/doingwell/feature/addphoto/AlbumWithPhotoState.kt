@@ -2,16 +2,16 @@ package doingwell.feature.addphoto
 
 import doingwell.feature.addphoto.model.AlbumWithPhotosUiModel
 
-sealed interface AddPhotoState {
+sealed interface AlbumWithPhotoState{
 
-    data object Loading: AddPhotoState
+    data object Loading: AlbumWithPhotoState
 
     data class Success(
         val albumWithPhotos: AlbumWithPhotosUiModel,
-    ) : AddPhotoState
+    ) : AlbumWithPhotoState
 
     data class Error(
         val exception: Throwable,
-    ) : AddPhotoState
+    ) : AlbumWithPhotoState
 
 }
