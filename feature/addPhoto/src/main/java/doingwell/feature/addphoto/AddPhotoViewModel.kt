@@ -27,7 +27,7 @@ class AddPhotoViewModel @Inject constructor(
     val getAlbumWithPhotosUseCase: GetAlbumWithPhotosUseCase,
 ) : ViewModel() {
 
-    private val albumSummaries: StateFlow<List<AlbumSummary>> = flow {
+    val albumSummaries: StateFlow<List<AlbumSummary>> = flow {
         emit(getAlbumSummariesUseCase().getOrThrow())
     }.catch { throwable ->
 
