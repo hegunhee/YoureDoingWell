@@ -7,9 +7,11 @@ import dagger.hilt.components.SingletonComponent
 import doingwell.core.data.repository.DefaultAuthRepository
 import doingwell.core.data.repository.DefaultDailyRecordRepository
 import doingwell.core.data.repository.DefaultPhotoRepository
+import doingwell.core.data.repository.DefaultPhotoStorageRepository
 import doingwell.core.domain.repository.AuthRepository
 import doingwell.core.domain.repository.DailyRecordRepository
 import doingwell.core.domain.repository.PhotoRepository
+import doingwell.core.domain.repository.PhotoStorageRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -34,4 +36,9 @@ abstract class RepositoryModule {
         defaultPhotoRepository: DefaultPhotoRepository,
     ): PhotoRepository
 
+    @Singleton
+    @Binds
+    abstract fun providePhotoStorageRepository(
+        defaultPhotoStorageRepository: DefaultPhotoStorageRepository,
+    ): PhotoStorageRepository
 }
