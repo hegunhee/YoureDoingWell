@@ -9,3 +9,7 @@ annotation class DailyRecordDatabase
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class UserDatabase
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class PhotoStorage
