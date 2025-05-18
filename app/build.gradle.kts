@@ -17,10 +17,11 @@ android {
 }
 
 dependencies {
-    add("implementation", platform(libs.firebase.bom))
-    add("implementation", libs.firebase.analytics)
-    add("implementation", libs.firebase.authenticate)
-    add("implementation", libs.firebase.realtimeDatabase)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.authenticate)
+    implementation(libs.firebase.realtimeDatabase)
+    implementation(libs.firebase.storage)
 
     add("implementation",project(":feature:main"))
     implementation(project(":core:data"))
