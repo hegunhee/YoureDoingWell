@@ -2,4 +2,5 @@
 <resources>
     <string name="back_button">뒤로가기 버튼</string>
     <string name="finish">완료</string>
+    <string name="album_menu_icon">앨범 목록 버튼</string>
 </resources>

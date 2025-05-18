@@ -111,4 +111,10 @@ class AddPhotoViewModel @Inject constructor(
         }
     }
 
+    fun selectAlbum(album: AlbumSummary) {
+        _selectedAlbum.update {
+            album
+        }
+    }
+
 }

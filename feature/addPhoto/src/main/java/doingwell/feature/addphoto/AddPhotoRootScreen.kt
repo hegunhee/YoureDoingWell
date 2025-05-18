@@ -2,16 +2,22 @@ package doingwell.feature.addphoto
 
 import android.net.Uri
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,7 +26,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -50,12 +60,15 @@ fun AddPhotoRootScreen(
     val albumSummaries = viewModel.albumSummaries.collectAsStateWithLifecycle().value
     val selectedPhotos: List<SelectablePhoto> =
         viewModel.selectedPhotos.collectAsStateWithLifecycle().value
+    val selectedAlbum = viewModel.selectedAlbum.collectAsStateWithLifecycle().value
 
     AddPhotoScreen(
         paddingValues = paddingValues,
+        selectedAlbum = selectedAlbum,
         albumSummaries = albumSummaries,
         albumWithPhotoState = albumWithPhotoState,
         selectedPhotos = selectedPhotos,
+        onClickAlbumSummary = viewModel::selectAlbum,
         onClickPhoto = viewModel::selectPhoto,
         onClickBackStack = onClickBackStack,
         onClickAddPhotos = onClickAddPhotos,
@@ -66,14 +79,18 @@ fun AddPhotoRootScreen(
 @Composable
 internal fun AddPhotoScreen(
     paddingValues: PaddingValues,
+    selectedAlbum : AlbumSummary,
     albumSummaries: List<AlbumSummary>,
     albumWithPhotoState: AlbumWithPhotoState,
     selectedPhotos: List<SelectablePhoto>,
+    onClickAlbumSummary: (AlbumSummary) -> Unit,
     onClickPhoto: (SelectablePhoto) -> Unit,
     onClickBackStack: () -> Unit,
     onClickAddPhotos: (ArrayList<Uri>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var showAlbumMenu by remember { mutableStateOf(false) }
+    
     Scaffold(
         topBar = {
             TopAppBar(
@@ -91,7 +108,37 @@ internal fun AddPhotoScreen(
                 },
                 title = {
                     Row {
-                        Text("전체 사진")
+                        Box {
+                            Row(
+                                modifier = modifier.clickable { showAlbumMenu = true },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = selectedAlbum.albumName,
+                                )
+                                Icon(
+                                    Icons.Default.ArrowDropDown,
+                                    contentDescription = stringResource(R.string.album_menu_icon),
+                                    modifier = modifier.size(48.dp)
+                                )
+                            }
+
+                            DropdownMenu (
+                                expanded = showAlbumMenu,
+                                onDismissRequest = { showAlbumMenu = false },
+                                modifier = modifier.fillMaxWidth(0.8f)
+                            ) {
+                                albumSummaries.forEach { album ->
+                                    DropdownMenuItem(
+                                        text = { Text("${album.albumName} (${album.size})") },
+                                        onClick = {
+                                            showAlbumMenu = false
+                                            onClickAlbumSummary(album)
+                                        }
+                                    )
+                                }
+                            }
+                        }
                         Spacer(modifier = modifier.weight(1f))
 
                         val finishTextModifier = remember(selectedPhotos) {
@@ -149,9 +196,11 @@ internal fun AddPhotoScreen(
 private fun AddPhotoScreenPreview() {
     AddPhotoScreen(
         paddingValues = PaddingValues(),
+        selectedAlbum = AlbumSummary("", 0),
         albumSummaries = listOf(),
         albumWithPhotoState = AlbumWithPhotoState.Loading,
         selectedPhotos = listOf(),
+        onClickAlbumSummary = {},
         onClickPhoto = {},
         onClickBackStack = {},
         onClickAddPhotos = {},
