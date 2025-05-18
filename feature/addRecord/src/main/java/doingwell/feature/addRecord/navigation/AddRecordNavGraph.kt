@@ -2,7 +2,6 @@ package doingwell.feature.addRecord.navigation
 
 import android.net.Uri
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.core.net.toUri
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.hegunhee.model.user.UserData
@@ -16,6 +15,7 @@ fun NavGraphBuilder.addRecordNavGraph(
     onClickSignOut: () -> Unit,
     onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
     getAddedPhoto: () -> List<Uri>?,
+    onRemovePhotoSavedStateHandle: () -> Unit,
 ) {
     composable(ADD_RECORD_ROUTE) {
         AddRecordRootScreen(
@@ -23,6 +23,7 @@ fun NavGraphBuilder.addRecordNavGraph(
             userData = userData,
             onClickAddPhoto = onClickAddPhoto,
             getAddedPhoto = getAddedPhoto,
+            onPhotoRemoveSavedStateHandle = onRemovePhotoSavedStateHandle,
         )
     }
 }

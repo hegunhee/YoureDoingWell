@@ -9,6 +9,7 @@ import doingwell.core.data.repository.DefaultDailyRecordRepository
 import doingwell.core.data.repository.DefaultPhotoRepository
 import doingwell.core.domain.repository.AuthRepository
 import doingwell.core.domain.repository.DailyRecordRepository
+import doingwell.core.domain.repository.PhotoRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -31,6 +32,6 @@ abstract class RepositoryModule {
     @Binds
     abstract fun providePhotoRepository(
         defaultPhotoRepository: DefaultPhotoRepository,
-    ): DefaultPhotoRepository
+    ): PhotoRepository
 
 }

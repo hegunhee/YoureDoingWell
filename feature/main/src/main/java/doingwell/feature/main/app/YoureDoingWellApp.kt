@@ -76,6 +76,7 @@ fun YoureDoingWellApp(
                 onClickSignOut = youreDoingWellAuthViewModel::signOut,
                 onClickAddPhoto = youreDoingWellAppState::navigateAddPhoto,
                 getAddedPhoto = youreDoingWellAppState::getPhotoCurrentStackEntry,
+                onRemovePhotoSavedStateHandle = youreDoingWellAppState::onRemovePhotoSavedStateHandle,
             )
 
             addPhotoNavGraph(

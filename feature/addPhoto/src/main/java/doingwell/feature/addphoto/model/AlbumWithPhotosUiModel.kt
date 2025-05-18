@@ -11,14 +11,30 @@ data class AlbumWithPhotosUiModel(
 ) {
 
     companion object {
-        fun of(albumWithPhotos: AlbumWithPhotos): AlbumWithPhotosUiModel {
-            with(albumWithPhotos) {
-                return AlbumWithPhotosUiModel(
-                    albumName = albumName,
-                    size = size,
-                    photos = photos.map { SelectablePhoto(it.toUri(), null) }
-                )
-            }
+        fun of(
+            albumWithPhotos: AlbumWithPhotos,
+            selectedPhotos: List<SelectablePhoto> = listOf()
+        ): AlbumWithPhotosUiModel {
+            return AlbumWithPhotosUiModel(
+                albumName = albumWithPhotos.albumName,
+                size = albumWithPhotos.photos.size,
+                photos = if (selectedPhotos.isEmpty()) {
+                    albumWithPhotos.photos.map {
+                        SelectablePhoto(
+                            photo = it.toUri(),
+                            selectCount = null,
+                        )
+                    }
+                } else {
+                    albumWithPhotos.photos.map { it ->
+                        val photo = it.toUri()
+                        SelectablePhoto(
+                            photo = photo,
+                            selectCount = selectedPhotos.find { it.photo == photo }?.selectCount
+                        )
+                    }
+                }
+            )
         }
     }
 

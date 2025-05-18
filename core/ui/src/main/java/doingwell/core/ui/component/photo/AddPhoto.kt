@@ -35,7 +35,7 @@ fun AddSmallPhoto(
             .background(Color.Gray)
             .clickable {
                 if (photoCount <= 4) {
-                    onClickAddPhoto(4, 4 - photoCount)
+                    onClickAddPhoto(4, photoCount)
                 } else {
                     onClickOverPhotoClick()
                 }

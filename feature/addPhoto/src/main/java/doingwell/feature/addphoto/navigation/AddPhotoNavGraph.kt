@@ -39,7 +39,7 @@ fun NavGraphBuilder.addPhotoNavGraph(
             onClickBackStack()
         } else {
             AddPhotoRootScreen(
-                paddingValues,
+                paddingValues = paddingValues,
                 maxPhotoCount = maxPhotoCount,
                 currentPhotoCount = currentPhotoCount,
                 onClickBackStack = onClickBackStack,
