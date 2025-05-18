@@ -2,6 +2,7 @@ package doingwell.core.data.datasource.remote
 
 import android.net.Uri
 import com.google.firebase.storage.StorageReference
+import doingwell.core.data.datasource.remote.model.photo.PhotoInfo
 import doingwell.core.data.di.qualifier.PhotoStorage
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
@@ -14,19 +15,21 @@ class DefaultPhotoStorageRemoteDataSource @Inject constructor(
 ) : PhotoStorageRemoteDataSource {
 
 
-    override suspend fun uploadPhoto(uri: Uri, userId: String): String {
-        val storageRef = storage.child(userId)
-        val imageRef = storageRef.child("${UUID.randomUUID()}.jpg")
+    override suspend fun uploadPhoto(uri: Uri, userId: String): PhotoInfo {
+        val storagePath = "Photos/$userId/${UUID.randomUUID()}.jpg"
+        val imageRef = storage.child(storagePath)
 
         imageRef.putFile(uri).await()
-        return imageRef.downloadUrl.await().toString()
+        return PhotoInfo(
+            imageRef.downloadUrl.await().toString(),
+            storagePath,
+        )
     }
 
-    override suspend fun deletePhoto(userId: String, photoUrl: String): String {
-        val storageRef = storage.child(userId)
-        val imageRef = storageRef.child(photoUrl)
-
+    override suspend fun deletePhoto(path: String): String {
+        val imageRef = storage.child(path)
         imageRef.delete().await()
-        return photoUrl
+
+        return path
     }
 }

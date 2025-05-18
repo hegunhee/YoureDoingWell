@@ -42,6 +42,6 @@ object FirebaseModule {
     @Provides
     @PhotoStorage
     fun providePhotoRemoteDataSource(): StorageReference {
-        return Firebase.storage.reference.child("Photos")
+        return Firebase.storage.reference
     }
 }
