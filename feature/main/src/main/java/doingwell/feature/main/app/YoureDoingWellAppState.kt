@@ -77,6 +77,12 @@ class YoureDoingWellAppState(
             ?.get<ArrayList<String>>(PHOTO_STACK_ENTRY_KEY)?.toList()?.map { it.toUri() }
     }
 
+    fun onRemovePhotoSavedStateHandle() {
+        navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.remove<ArrayList<String>>(PHOTO_STACK_ENTRY_KEY)
+    }
+
     companion object {
         const val PHOTO_STACK_ENTRY_KEY = "PHOTOS"
     }

@@ -11,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +26,15 @@ fun AddRecordRootScreen(
     userData: UserData?,
     onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
     getAddedPhoto: () -> List<Uri>?,
+    onPhotoRemoveSavedStateHandle : () -> Unit,
 ) {
+    LaunchedEffect(getAddedPhoto()) {
+        val addedPhoto = getAddedPhoto()
+        if(addedPhoto != null) {
+            onPhotoRemoveSavedStateHandle()
+        }
+
+    }
     if (userData != null) {
         AddRecordScreen(
             paddingValues = paddingValues,
