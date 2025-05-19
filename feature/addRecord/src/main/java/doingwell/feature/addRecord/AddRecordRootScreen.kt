@@ -59,6 +59,7 @@ fun AddRecordRootScreen(
             onclickDeletePhoto = viewModel::removePhoto,
             onTitleTextChanged = onTitleTextChanged,
             onDescriptionTextChanged = onDescriptionChanged,
+            onClickSaveButton = viewModel::saveRecord,
         )
     }
 }
@@ -74,6 +75,7 @@ internal fun AddRecordScreen(
     onclickDeletePhoto: (String) -> Unit,
     onTitleTextChanged: (String) -> Unit,
     onDescriptionTextChanged: (String) -> Unit,
+    onClickSaveButton: (title: String, decsription: String, userId: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -129,7 +131,9 @@ internal fun AddRecordScreen(
 
         Spacer(modifier = modifier.weight(1f))
         Button(
-            {},
+            {
+                onClickSaveButton(title, description, userData.uid)
+            },
             modifier = modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.save_record))
@@ -150,5 +154,6 @@ private fun AddRecordScreenPreview() {
         onclickDeletePhoto = {},
         onTitleTextChanged = {},
         onDescriptionTextChanged = {},
+        onClickSaveButton = {_, _, _ ->},
     )
 }
