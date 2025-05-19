@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +14,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,6 +44,8 @@ fun AddRecordRootScreen(
         }
     }
 
+    val (title, onTitleTextChanged) = remember { mutableStateOf("") }
+    val (description, onDescriptionChanged) = remember { mutableStateOf("") }
     val photos = viewModel.photos.collectAsStateWithLifecycle().value
 
     if (userData != null) {
@@ -50,8 +53,12 @@ fun AddRecordRootScreen(
             paddingValues = paddingValues,
             userData = userData,
             photos = photos,
+            title = title,
+            description = description,
             onClickAddPhoto = onClickAddPhoto,
             onclickDeletePhoto = viewModel::removePhoto,
+            onTitleTextChanged = onTitleTextChanged,
+            onDescriptionTextChanged = onDescriptionChanged,
         )
     }
 }
@@ -61,8 +68,12 @@ internal fun AddRecordScreen(
     paddingValues: PaddingValues,
     userData: UserData,
     photos: List<String>,
+    title: String,
+    description: String,
     onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
     onclickDeletePhoto: (String) -> Unit,
+    onTitleTextChanged: (String) -> Unit,
+    onDescriptionTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -99,8 +110,8 @@ internal fun AddRecordScreen(
             }
         }
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = title,
+            onValueChange = onTitleTextChanged,
             placeholder = { Text(stringResource(R.string.enter_title)) },
             modifier = modifier
                 .padding(vertical = 5.dp)
@@ -108,8 +119,8 @@ internal fun AddRecordScreen(
         )
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = description,
+            onValueChange = onDescriptionTextChanged,
             placeholder = { Text(stringResource(R.string.enter_description)) },
             modifier = modifier
                 .padding(vertical = 5.dp)
@@ -133,7 +144,11 @@ private fun AddRecordScreenPreview() {
         paddingValues = PaddingValues(),
         userData = UserData(),
         photos = listOf(),
+        title = "",
+        description = "",
         onClickAddPhoto = { _, _ -> },
         onclickDeletePhoto = {},
+        onTitleTextChanged = {},
+        onDescriptionTextChanged = {},
     )
 }
