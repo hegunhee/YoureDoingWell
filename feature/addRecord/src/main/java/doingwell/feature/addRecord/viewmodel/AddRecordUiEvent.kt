@@ -1,4 +1,4 @@
-package doingwell.feature.addRecord
+package doingwell.feature.addRecord.viewmodel
 
 sealed interface AddRecordUiEvent {
 

@@ -29,8 +29,9 @@ import com.hegunhee.model.user.UserData
 import doingwell.core.common.ObserveAsEvents
 import doingwell.core.ui.component.photo.AddSmallPhoto
 import doingwell.core.ui.component.photo.SmallPhoto
-import doingwell.feature.addRecord.AddRecordUiEvent.PhotoError
-import doingwell.feature.addRecord.AddRecordUiEvent.Save
+import doingwell.feature.addRecord.viewmodel.AddRecordUiEvent.PhotoError
+import doingwell.feature.addRecord.viewmodel.AddRecordUiEvent.Save
+import doingwell.feature.addRecord.viewmodel.AddRecordViewModel
 
 @Composable
 fun AddRecordRootScreen(

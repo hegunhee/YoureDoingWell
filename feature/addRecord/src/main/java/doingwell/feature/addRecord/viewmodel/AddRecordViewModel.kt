@@ -1,4 +1,4 @@
-package doingwell.feature.addRecord
+package doingwell.feature.addRecord.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
