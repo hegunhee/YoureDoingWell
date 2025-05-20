@@ -16,6 +16,7 @@ fun NavGraphBuilder.addRecordNavGraph(
     onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
     getAddedPhoto: () -> List<Uri>?,
     onRemovePhotoSavedStateHandle: () -> Unit,
+    onRecordToMain: () -> Unit,
 ) {
     composable(ADD_RECORD_ROUTE) {
         AddRecordRootScreen(
@@ -24,6 +25,7 @@ fun NavGraphBuilder.addRecordNavGraph(
             onClickAddPhoto = onClickAddPhoto,
             getAddedPhoto = getAddedPhoto,
             onPhotoRemoveSavedStateHandle = onRemovePhotoSavedStateHandle,
+            onRecordToMain = onRecordToMain,
         )
     }
 }
