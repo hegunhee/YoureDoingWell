@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -147,6 +148,7 @@ internal fun AddRecordScreen(
             modifier = modifier
                 .padding(vertical = 5.dp)
                 .fillMaxWidth()
+                .height(150.dp)
         )
 
         Spacer(modifier = modifier.weight(1f))
