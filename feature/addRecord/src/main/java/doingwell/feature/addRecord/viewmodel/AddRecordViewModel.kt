@@ -57,8 +57,10 @@ class AddRecordViewModel @Inject constructor(
     fun addEndTime(hour: Int = 0, minute: Int) {
         val newHour = (hour + endedAt.value.hour) + ((endedAt.value.minute + minute) / 60)
         val newMinute = (endedAt.value.minute + minute) % 60
-        if(newHour >= 23 && newMinute >= 59) {
-
+        if(newHour >= 23 && newMinute >= 59 || newHour >= 24 && newMinute > 0) {
+            viewModelScope.launch {
+                _uiEvent.emit(AddRecordUiEvent.TimeOut)
+            }
             return
         }
 

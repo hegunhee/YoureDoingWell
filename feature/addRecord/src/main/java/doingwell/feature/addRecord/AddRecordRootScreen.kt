@@ -34,8 +34,10 @@ import com.hegunhee.model.user.UserData
 import doingwell.core.common.ObserveAsEvents
 import doingwell.core.ui.component.photo.AddSmallPhoto
 import doingwell.core.ui.component.photo.SmallPhoto
+import doingwell.feature.addRecord.viewmodel.AddRecordUiEvent
 import doingwell.feature.addRecord.viewmodel.AddRecordUiEvent.PhotoError
 import doingwell.feature.addRecord.viewmodel.AddRecordUiEvent.Save
+import doingwell.feature.addRecord.viewmodel.AddRecordUiEvent.TimeOut
 import doingwell.feature.addRecord.viewmodel.AddRecordViewModel
 
 @Composable
@@ -66,6 +68,10 @@ fun AddRecordRootScreen(
 
             PhotoError -> {
                 Toast.makeText(context, context.getString(R.string.photo_error), Toast.LENGTH_SHORT)
+                    .show()
+            }
+            TimeOut -> {
+                Toast.makeText(context, context.getString(R.string.time_out), Toast.LENGTH_SHORT)
                     .show()
             }
         }
