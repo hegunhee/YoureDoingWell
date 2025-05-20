@@ -10,8 +10,11 @@ import doingwell.core.domain.usecase.photoStorage.UploadPhotoUseCase
 import doingwell.core.domain.usecase.record.InsertDailyRecordUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -26,6 +29,9 @@ class AddRecordViewModel @Inject constructor(
 
     private val _photos: MutableStateFlow<List<String>> = MutableStateFlow(listOf())
     val photos: StateFlow<List<String>> = _photos.asStateFlow()
+
+    private val _uiEvent: MutableSharedFlow<AddRecordUiEvent> = MutableSharedFlow()
+    val uiEvent : SharedFlow<AddRecordUiEvent> = _uiEvent.asSharedFlow()
 
     fun addPhotos(photos: List<Uri>) {
         val photoStrings = photos.map { it.toString() }
@@ -71,6 +77,7 @@ class AddRecordViewModel @Inject constructor(
                 )
             )
 
+            _uiEvent.emit(AddRecordUiEvent.Save)
         }
     }
 
