@@ -1,6 +1,7 @@
 package doingwell.feature.addRecord
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,6 +29,7 @@ import com.hegunhee.model.user.UserData
 import doingwell.core.common.ObserveAsEvents
 import doingwell.core.ui.component.photo.AddSmallPhoto
 import doingwell.core.ui.component.photo.SmallPhoto
+import doingwell.feature.addRecord.AddRecordUiEvent.PhotoError
 import doingwell.feature.addRecord.AddRecordUiEvent.Save
 
 @Composable
@@ -39,6 +42,8 @@ fun AddRecordRootScreen(
     onPhotoRemoveSavedStateHandle: () -> Unit,
     onRecordToMain : () -> Unit,
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(getAddedPhoto()) {
         val addedPhoto = getAddedPhoto()
         if (addedPhoto != null) {
@@ -51,6 +56,9 @@ fun AddRecordRootScreen(
         when(event) {
             Save -> {
                 onRecordToMain()
+            }
+            PhotoError -> {
+                Toast.makeText(context, context.getString(R.string.photo_error), Toast.LENGTH_SHORT).show()
             }
         }
     }

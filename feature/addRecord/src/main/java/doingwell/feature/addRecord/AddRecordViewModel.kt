@@ -62,7 +62,8 @@ class AddRecordViewModel @Inject constructor(
                     }.awaitAll().map { it.getOrThrow() }
                 } else null
             } catch (e : Exception) {
-                throw IllegalStateException("사진 저장중 에러가 발생했습니다.")
+                _uiEvent.emit(AddRecordUiEvent.PhotoError)
+                return@launch
             }
 
             insertDailyRecordUseCase(
