@@ -24,8 +24,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hegunhee.model.user.UserData
+import doingwell.core.common.ObserveAsEvents
 import doingwell.core.ui.component.photo.AddSmallPhoto
 import doingwell.core.ui.component.photo.SmallPhoto
+import doingwell.feature.addRecord.AddRecordUiEvent.Save
 
 @Composable
 fun AddRecordRootScreen(
@@ -35,12 +37,21 @@ fun AddRecordRootScreen(
     onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
     getAddedPhoto: () -> List<Uri>?,
     onPhotoRemoveSavedStateHandle: () -> Unit,
+    onRecordToMain : () -> Unit,
 ) {
     LaunchedEffect(getAddedPhoto()) {
         val addedPhoto = getAddedPhoto()
         if (addedPhoto != null) {
             viewModel.addPhotos(addedPhoto)
             onPhotoRemoveSavedStateHandle()
+        }
+    }
+
+    ObserveAsEvents(viewModel.uiEvent) { event ->
+        when(event) {
+            Save -> {
+                onRecordToMain()
+            }
         }
     }
 

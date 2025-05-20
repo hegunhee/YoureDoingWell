@@ -77,6 +77,7 @@ fun YoureDoingWellApp(
                 onClickAddPhoto = youreDoingWellAppState::navigateAddPhoto,
                 getAddedPhoto = youreDoingWellAppState::getPhotoCurrentStackEntry,
                 onRemovePhotoSavedStateHandle = youreDoingWellAppState::onRemovePhotoSavedStateHandle,
+                onRecordToMain = youreDoingWellAppState::navigateToDaily
             )
 
             addPhotoNavGraph(
