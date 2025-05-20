@@ -6,4 +6,5 @@ sealed interface AddRecordUiEvent {
 
     data object PhotoError : AddRecordUiEvent
 
+    data object TimeOut : AddRecordUiEvent
 }

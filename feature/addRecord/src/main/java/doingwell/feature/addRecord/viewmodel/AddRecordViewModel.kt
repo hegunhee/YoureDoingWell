@@ -30,6 +30,14 @@ class AddRecordViewModel @Inject constructor(
     private val _photos: MutableStateFlow<List<String>> = MutableStateFlow(listOf())
     val photos: StateFlow<List<String>> = _photos.asStateFlow()
 
+    private val now : LocalDateTime = LocalDateTime.now()
+
+    private val _startedAt: MutableStateFlow<DateTimeInfo> = MutableStateFlow(DateTimeInfo.nowToDateTimeInfo(now))
+    val startedAt: StateFlow<DateTimeInfo> = _startedAt.asStateFlow()
+
+    private val _endedAt: MutableStateFlow<DateTimeInfo> = MutableStateFlow(DateTimeInfo.nowToDateTimeInfo(now))
+    val endedAt : StateFlow<DateTimeInfo> = _endedAt.asStateFlow()
+
     private val _uiEvent: MutableSharedFlow<AddRecordUiEvent> = MutableSharedFlow()
     val uiEvent : SharedFlow<AddRecordUiEvent> = _uiEvent.asSharedFlow()
 
@@ -46,13 +54,29 @@ class AddRecordViewModel @Inject constructor(
         }
     }
 
+    fun addEndTime(hour: Int = 0, minute: Int) {
+        val newHour = (hour + endedAt.value.hour) + ((endedAt.value.minute + minute) / 60)
+        val newMinute = (endedAt.value.minute + minute) % 60
+        if(newHour >= 23 && newMinute >= 59 || newHour >= 24 && newMinute > 0) {
+            viewModelScope.launch {
+                _uiEvent.emit(AddRecordUiEvent.TimeOut)
+            }
+            return
+        }
+
+        _endedAt.update { endTime ->
+            endTime.copy(hour = newHour, minute = newMinute)
+        }
+    }
+
+    fun returnEndedAt() {
+        _endedAt.update {
+            startedAt.value
+        }
+    }
+
     fun saveRecord(title: String, description: String, userId: String) {
         if (title.isEmpty()) return
-
-        val localDateTime = LocalDateTime.now()
-        val dateTimeInfo = createDateTimeInfo(localDateTime)
-
-
 
         viewModelScope.launch {
             val uploadedPhotos = try {
@@ -73,22 +97,12 @@ class AddRecordViewModel @Inject constructor(
                     title = title,
                     description = description.ifBlank { null },
                     photos = uploadedPhotos,
-                    startedAt = dateTimeInfo,
-                    endedAt = dateTimeInfo
+                    startedAt = startedAt.value,
+                    endedAt = endedAt.value
                 )
             )
 
             _uiEvent.emit(AddRecordUiEvent.Save)
         }
-    }
-
-    private fun createDateTimeInfo(localDateTime: LocalDateTime): DateTimeInfo {
-        return DateTimeInfo(
-            localDateTime.year,
-            localDateTime.monthValue,
-            localDateTime.dayOfMonth,
-            localDateTime.hour,
-            localDateTime.minute,
-        )
     }
 }

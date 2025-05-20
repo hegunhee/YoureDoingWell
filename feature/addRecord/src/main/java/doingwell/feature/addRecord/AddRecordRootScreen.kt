@@ -12,15 +12,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -30,12 +29,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.hegunhee.model.user.DateTimeInfo
 import com.hegunhee.model.user.UserData
 import doingwell.core.common.ObserveAsEvents
 import doingwell.core.ui.component.photo.AddSmallPhoto
 import doingwell.core.ui.component.photo.SmallPhoto
+import doingwell.feature.addRecord.viewmodel.AddRecordUiEvent
 import doingwell.feature.addRecord.viewmodel.AddRecordUiEvent.PhotoError
 import doingwell.feature.addRecord.viewmodel.AddRecordUiEvent.Save
+import doingwell.feature.addRecord.viewmodel.AddRecordUiEvent.TimeOut
 import doingwell.feature.addRecord.viewmodel.AddRecordViewModel
 
 @Composable
@@ -46,7 +48,7 @@ fun AddRecordRootScreen(
     onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
     getAddedPhoto: () -> List<Uri>?,
     onPhotoRemoveSavedStateHandle: () -> Unit,
-    onRecordToMain : () -> Unit,
+    onRecordToMain: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -59,12 +61,18 @@ fun AddRecordRootScreen(
     }
 
     ObserveAsEvents(viewModel.uiEvent) { event ->
-        when(event) {
+        when (event) {
             Save -> {
                 onRecordToMain()
             }
+
             PhotoError -> {
-                Toast.makeText(context, context.getString(R.string.photo_error), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.photo_error), Toast.LENGTH_SHORT)
+                    .show()
+            }
+            TimeOut -> {
+                Toast.makeText(context, context.getString(R.string.time_out), Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -73,17 +81,24 @@ fun AddRecordRootScreen(
     val (description, onDescriptionChanged) = remember { mutableStateOf("") }
     val photos = viewModel.photos.collectAsStateWithLifecycle().value
 
+    val startedAt = viewModel.startedAt.collectAsStateWithLifecycle().value
+    val endedAt = viewModel.endedAt.collectAsStateWithLifecycle().value
+
     if (userData != null) {
         AddRecordScreen(
             paddingValues = paddingValues,
             userData = userData,
             photos = photos,
             title = title,
+            startedAt = startedAt,
+            endedAt = endedAt,
             description = description,
             onClickAddPhoto = onClickAddPhoto,
             onclickDeletePhoto = viewModel::removePhoto,
             onTitleTextChanged = onTitleTextChanged,
             onDescriptionTextChanged = onDescriptionChanged,
+            onClickAddTime = viewModel::addEndTime,
+            onClickReturnTime = viewModel::returnEndedAt,
             onClickSaveButton = viewModel::saveRecord,
         )
     }
@@ -96,11 +111,15 @@ internal fun AddRecordScreen(
     photos: List<String>,
     title: String,
     description: String,
+    startedAt: DateTimeInfo,
+    endedAt: DateTimeInfo,
     onClickAddPhoto: (maxPhotoCount: Int, currentPhotoCount: Int) -> Unit,
     onclickDeletePhoto: (String) -> Unit,
     onTitleTextChanged: (String) -> Unit,
     onDescriptionTextChanged: (String) -> Unit,
     onClickSaveButton: (title: String, decsription: String, userId: String) -> Unit,
+    onClickAddTime: (Int, Int) -> Unit,
+    onClickReturnTime: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -180,6 +199,83 @@ internal fun AddRecordScreen(
                 .height(150.dp)
         )
 
+        Row(
+            modifier = modifier.padding(vertical = 5.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                stringResource(R.string.start_time),
+                fontSize = 20.sp,
+                modifier = modifier.alignByBaseline()
+            )
+            Text(
+                startedAt.getTimeText(),
+                fontSize = 20.sp,
+                modifier = modifier.alignByBaseline()
+            )
+        }
+
+        LazyRow(
+            modifier = modifier
+                .padding(top = 5.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (startedAt != endedAt) {
+                item {
+                    Button(
+                        { onClickReturnTime() }
+                    ) {
+                        Text("초기화")
+                    }
+                }
+
+            }
+            item {
+                Button(
+                    { onClickAddTime(0, 10) }
+                ) {
+                    Text("+10분")
+                }
+            }
+            item {
+                Button(
+                    { onClickAddTime(0, 15) }
+                ) {
+                    Text("+15분")
+                }
+            }
+            item {
+                Button(
+                    { onClickAddTime(0, 30) }
+                ) {
+                    Text("+30분")
+                }
+            }
+            item {
+                Button(
+                    { onClickAddTime(1, 0) }
+                ) {
+                    Text("+1시간")
+                }
+            }
+        }
+
+        Row(
+            modifier = modifier.padding(vertical = 5.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                stringResource(R.string.end_time),
+                fontSize = 20.sp,
+                modifier = modifier.alignByBaseline()
+            )
+            Text(
+                endedAt.getTimeText(),
+                fontSize = 20.sp,
+                modifier = modifier.alignByBaseline()
+            )
+        }
+
         Spacer(modifier = modifier.weight(1f))
         Button(
             {
@@ -201,10 +297,14 @@ private fun AddRecordScreenPreview() {
         photos = listOf(),
         title = "",
         description = "",
+        startedAt = DateTimeInfo(0, 0, 0, 0, 0),
+        endedAt = DateTimeInfo(0, 0, 0, 0, 0),
         onClickAddPhoto = { _, _ -> },
         onclickDeletePhoto = {},
         onTitleTextChanged = {},
         onDescriptionTextChanged = {},
-        onClickSaveButton = {_, _, _ ->},
+        onClickAddTime = { _, _ -> },
+        onClickReturnTime = {},
+        onClickSaveButton = { _, _, _ -> },
     )
 }
