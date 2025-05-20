@@ -5,13 +5,16 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -132,6 +136,21 @@ internal fun AddRecordScreen(
                 )
             }
         }
+        Row(
+            modifier = modifier
+                .padding(top = 5.dp)
+        ) {
+            Text(
+                text = "제목",
+                fontSize = 20.sp
+            )
+            Text(
+                text = "*",
+                fontSize = 15.sp,
+                color = Color.Red
+            )
+        }
+
         OutlinedTextField(
             value = title,
             onValueChange = onTitleTextChanged,
@@ -140,6 +159,16 @@ internal fun AddRecordScreen(
                 .padding(vertical = 5.dp)
                 .fillMaxWidth()
         )
+
+        Row(
+            modifier = modifier
+                .padding(top = 5.dp)
+        ) {
+            Text(
+                text = "설명",
+                fontSize = 20.sp
+            )
+        }
 
         OutlinedTextField(
             value = description,
