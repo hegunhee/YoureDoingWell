@@ -179,7 +179,6 @@ internal fun AddRecordScreen(
                 .fillMaxWidth()
                 .height(150.dp)
         )
-
         Spacer(modifier = modifier.weight(1f))
         Button(
             {
