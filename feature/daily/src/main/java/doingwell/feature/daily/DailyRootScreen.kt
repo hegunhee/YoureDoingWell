@@ -11,10 +11,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.hegunhee.model.user.UserData
+import doingwell.feature.daily.viewModel.DailyViewModel
 
 @Composable
 internal fun DailyRootScreen(
+    viewModel: DailyViewModel = hiltViewModel(),
     paddingValues: PaddingValues,
     userData: UserData?,
     onClickSignOut: () -> Unit,
