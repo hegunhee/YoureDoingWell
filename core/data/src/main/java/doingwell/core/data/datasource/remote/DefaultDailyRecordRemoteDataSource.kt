@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Transaction
 import com.google.firebase.database.Transaction.Handler
+import com.google.firebase.database.getValue
 import doingwell.core.data.datasource.remote.model.record.DailyRecordResponse
 import doingwell.core.data.di.qualifier.DailyRecordDatabase
 import kotlinx.coroutines.tasks.await
@@ -70,9 +71,19 @@ class DefaultDailyRecordRemoteDataSource @Inject constructor(
         userId: String,
         dateStamp: String,
     ): List<DailyRecordResponse> {
-        val ref = database.child(getUserDailyPath(userId, dateStamp)).child("records").ref
+        val userRecordsRef = database.child(getUserDailyPath(userId, dateStamp)).ref
+
+        val count = userRecordsRef.child("count").get().await().getValue(Int::class.java)
+
+        if(count == null || count == 0) {
+            return emptyList()
+        }
+
+        val ref = userRecordsRef.child("records").ref
+
 
         val snapshot = ref.get().await()
+
 
         val result = mutableListOf<DailyRecordResponse>()
         for (recordNode in snapshot.children) {
